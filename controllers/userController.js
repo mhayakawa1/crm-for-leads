@@ -6,8 +6,9 @@ import {
   updateUser,
   deleteUser,
   searchUsers,
+  getFilteredUsers,
   loginUser,
-  registerUser
+  registerUser,
 } from "../services/userService.js";
 import supabase from "../config/supabaseClient.js";
 
@@ -23,7 +24,14 @@ export const addUser = async (req, res) => {
 
 export const fetchUsers = async (req, res) => {
   try {
-    const users = await getUsers();
+    const filters = {
+      name: req.query.name,
+      age: req.query.age,
+      assigned_to: req.query.assigned_to,
+      status: req.query.status,
+    };
+
+    const users = await getFilteredUsers(filters);
     res.status(200).json(users);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -92,7 +100,6 @@ export const findUsers = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
 
 export const signUp = async (req, res) => {
   try {

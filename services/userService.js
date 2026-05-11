@@ -78,6 +78,30 @@ export const searchUsers = async (query) => {
   return data;
 };
 
+export const getFilteredUsers = async (filters) => {
+  let query = supabase.from("users").select("*");
+
+  if (filters.name) {
+    query = query.ilike("name", `%${filters.name}%`);
+  }
+
+  if (filters.age) {
+    query = query.eq("age", filters.age);
+  }
+
+  if (filters.assigned_to) {
+    query = query.eq("assigned_to", filters.assigned_to);
+  }
+
+  if (filters.status) {
+    query = query.eq("status", filters.status);
+  }
+
+  const { data, error } = await query;
+  if (error) throw new Error(error.message);
+  return data;
+};
+
 export const loginUser = async (email, password) => {
   const { data, error } = await supabase
     .from("users")
