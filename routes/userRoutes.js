@@ -86,7 +86,7 @@ const router = express.Router();
  *         description: Server error
  */
 router.post("/users", protect, addUser);
-router.get("/users", protect, fetchUsers);
+router.get("/users", fetchUsers);
 
 /**
  * @swagger
