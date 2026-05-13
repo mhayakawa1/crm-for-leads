@@ -1,4 +1,4 @@
-import "./App.css";
+import "./index.css";
 
 function App() {
   const fetchData = async () => {
@@ -15,7 +15,7 @@ function App() {
   };
   fetchData();
 
-  return <div className="App"></div>;
+  return <div className=""></div>;
 }
 
 export default App;

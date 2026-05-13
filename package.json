@@ -6,7 +6,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "fullstack": "concurrently \"npm run dev\" \"npm start --prefix client\""
   },
   "keywords": [
     "nodejs",
@@ -23,6 +24,10 @@
     "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
-    "nodemon": "^3.1.9"
+    "autoprefixer": "^10.5.0",
+    "concurrently": "^9.2.1",
+    "nodemon": "^3.1.9",
+    "postcss": "^8.5.14",
+    "tailwindcss": "^3.4.19"
   }
 }
