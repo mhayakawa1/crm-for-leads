@@ -1,4 +1,14 @@
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import "./index.css";
+import Signup from "./components/Signup";
+import Login from "./components/Login";
+import Dashboard from "./components/Dashboard";
+import Error from "./components/Error";
 
 function App() {
   const fetchData = async () => {
@@ -15,7 +25,17 @@ function App() {
   };
   fetchData();
 
-  return <div className=""></div>;
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<Navigate to="/login" />} />
+        <Route path="/dashboard" Component={Dashboard} />
+        <Route path="/login" Component={Login} />
+        <Route path="/signup" Component={Signup} />
+        <Route path="*" Component={Error} />
+      </Routes>
+    </Router>
+  );
 }
 
 export default App;
