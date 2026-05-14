@@ -5,6 +5,9 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
+   "client-dev": "npm run dev --prefix ./client",
+    "client-build": "npm run build --prefix client",
+    "server-dev": "node server.js",
     "start": "node index.js",
     "dev": "nodemon index.js",
     "fullstack": "concurrently \"npm run dev\" \"npm start --prefix client\""
@@ -20,11 +23,14 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "next": "^16.2.6",
     "react-router-dom": "^7.15.0",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
     "autoprefixer": "^10.5.0",
     "concurrently": "^9.2.1",
     "nodemon": "^3.1.9",

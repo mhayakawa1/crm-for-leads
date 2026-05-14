@@ -1,14 +1,16 @@
+"use client"
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
+  BrowserRouter,
 } from "react-router-dom";
 import "./index.css";
-import Signup from "./components/Signup";
-import Login from "./components/Login";
-import Dashboard from "./components/Dashboard";
-import Error from "./components/Error";
+import Signup from "./app/signup/page";
+import Login from "./app/login/page";
+import dashboard from "./app/dashboard/page";
+import Error from "./app/error/page";
 
 function App() {
   const fetchData = async () => {
@@ -26,15 +28,15 @@ function App() {
   fetchData();
 
   return (
-    <Router>
+    <BrowserRouter>
       <Routes>
         <Route path="/" element={<Navigate to="/login" />} />
-        <Route path="/dashboard" Component={Dashboard} />
+        <Route path="/dashboard" Component={dashboard} />
         <Route path="/login" Component={Login} />
         <Route path="/signup" Component={Signup} />
         <Route path="*" Component={Error} />
       </Routes>
-    </Router>
+    </BrowserRouter>
   );
 }
 
