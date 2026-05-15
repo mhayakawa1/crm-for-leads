@@ -11,9 +11,13 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-export default function Form({ title }) {
+interface FormProps {
+  title: string;
+}
+
+export default function Form({ title }: FormProps) {
   return (
-    <Card className='border w-full max-w-sm h-fit'>
+    <Card className="border w-full max-w-sm h-fit">
       <CardHeader>
         <CardTitle>{title}</CardTitle>
       </CardHeader>{" "}
