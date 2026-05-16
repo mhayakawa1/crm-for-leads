@@ -4,15 +4,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { ArrowUpDown } from "lucide-react";
 
-export type User = {
-  id: string | number;
-  name: string;
-  email: string;
-  age: number;
-  createdAt: string;
-  assigned_to: string;
-  status: string;
-};
+import { User } from "@/contexts/DataContext";
 
 export const columns: ColumnDef<User>[] = [
   {

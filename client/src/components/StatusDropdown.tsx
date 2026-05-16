@@ -7,8 +7,14 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "./ui/button";
 import { ChevronDown } from "lucide-react";
-export function StatusDropdown() {
+
+interface DropdownProps {
+  setStatusInput: React.Dispatch<React.SetStateAction<string>>;
+}
+
+export function StatusDropdown({ setStatusInput }: DropdownProps) {
   const statuses = ["New", "Contacted", "Qualified", "Closed"];
+
   return (
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild className="">
@@ -18,11 +24,17 @@ export function StatusDropdown() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="bg-white border border-solid">
-        {statuses.map((status: string) => (
-          <DropdownMenuItem key={status} className="hover:bg-gray-300">
-            {status}
-          </DropdownMenuItem>
-        ))}
+        <form onSubmit={(event) => event.preventDefault()}>
+          {statuses.map((status: string) => (
+            <DropdownMenuItem
+              onClick={() => setStatusInput(status)}
+              key={status}
+              className="hover:bg-gray-300"
+            >
+              {status}
+            </DropdownMenuItem>
+          ))}
+        </form>
       </DropdownMenuContent>
     </DropdownMenu>
   );

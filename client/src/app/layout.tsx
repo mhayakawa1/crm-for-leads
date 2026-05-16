@@ -1,5 +1,6 @@
 "use client";
 import "./../index.css";
+import { DataProvider } from "@/contexts/DataContext";
 
 export default function RootLayout({
   children,
@@ -9,7 +10,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="flex items-center min-h-screen bg-background antialiased">
-        {children}
+        <DataProvider>{children}</DataProvider>
       </body>
     </html>
   );
