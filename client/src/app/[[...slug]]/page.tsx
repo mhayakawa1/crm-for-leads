@@ -1,20 +1,23 @@
-// "use client";
-// import App from "../../App.js";
-// import "./../index.css"
+import PageClient from "./PageClient";
 
-// export default function Page() {
-//   return (
-//     <div className="h-[100vh] border border-solid flex justify-center items-center p-8 max-w-4xl mx-auto space-y-4">
-//       <App />
-//     </div>
-//   );
-// }
-"use client";
+interface PageProps {
+  params: Promise<{ slug?: string[] }>;
+}
+export async function generateStaticParams() {
+  const posts = [
+    { slug: ["login"] },
+    { slug: ["signup"] },
+    { slug: ["dashboard"] },
+    { slug: [] },
+  ];
 
-import dynamic from "next/dynamic";
+  return posts;
+}
 
-const CRAApp = dynamic(() => import("../../App"), { ssr: false });
-
-export default function CatchAllPage() {
-  return <CRAApp />;
+export default async function CatchAllPage({ params }: PageProps) {
+  const resolvedParams = await params;
+  const currentPath = resolvedParams.slug
+    ? `/${resolvedParams.slug.join("/")}`
+    : "/";
+  return <PageClient initialPath={currentPath} />;
 }
