@@ -1,4 +1,8 @@
 import express from "express";
+import { Router } from "express";
+import { serialize } from "cookie";
+import { createClient } from "@supabase/supabase-js";
+
 import {
   addUser,
   fetchUsers,
@@ -13,8 +17,55 @@ import {
 } from "../controllers/userController.js";
 import { protect } from "../middleware/auth.js";
 
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+);
 const router = express.Router();
+router.use((req, res, next) => {
+  next();
+});
+router.post("/signup", signUp);
+router.post(
+  "/login",
+  async (req, res) => {
+    try {
+      const { email, password } = req.body;
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+      if (error) return res.status(400).json({ error: error.message });
 
+      const { access_token, refresh_token } = data.session;
+      const tokenCookie = serialize("sb-access-token", access_token, {
+        httpOnly: true,
+        secure: false,
+        sameSite: "lax",
+        path: "/",
+        maxAge: 60 * 60 * 24 * 7,
+      });
+
+      const refreshCookie = serialize("sb-refresh-token", refresh_token, {
+        httpOnly: true,
+        secure: false,
+        sameSite: "lax",
+        path: "/",
+        maxAge: 60 * 60 * 24 * 7,
+      });
+      res.setHeader("Set-Cookie", [tokenCookie, refreshCookie]);
+      return res.json({
+        success: true,
+        accessToken: access_token,
+      });
+    } catch (err) {
+      return res.status(500).json({ error: err.message });
+    }
+  },
+  signIn,
+);
+router.post("/logout", signOut);
+router.use(protect);
 /**
  * @swagger
  * components:
@@ -214,9 +265,5 @@ router.delete("/users/:id", removeUser);
  *         description: Server error
  */
 router.get("/users/email/:email", fetchUserByEmail);
-
-router.post("/signup", signUp);
-router.post("/login", signIn);
-router.post("/logout", signOut);
 
 export default router;

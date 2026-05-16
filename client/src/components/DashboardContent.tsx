@@ -10,7 +10,8 @@ export default function DashboardContent() {
   const { data } = useData();
   const [filterBy, setFilterBy] = useState("name");
 
-  useEffect(() => {}, [filterBy, setFilterBy]);
+  useEffect(() => {
+  }, [filterBy, setFilterBy]);
 
   return (
     <div className="flex flex-col gap-2 container mx-auto py-10 px-4 border border-solid box-border">

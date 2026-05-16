@@ -1,4 +1,5 @@
 "use client";
+
 import { useRouter } from "next/navigation";
 import {
   createContext,
@@ -18,6 +19,7 @@ export interface ContextData {
     id: string,
     authType?: string,
   ) => void;
+  hasLoggedIn: boolean;
 }
 
 export type User = {
@@ -42,7 +44,9 @@ export interface Request {
   method: string;
   headers: {
     "Content-Type": string;
+    Authorization: string;
   };
+  request?: { credentials: string };
   body?: string;
 }
 
@@ -58,26 +62,37 @@ export function DataProvider({ children }: { children: ReactNode }) {
   const [method, setMethod] = useState("GET");
   const [body, setBody] = useState("");
   const [id, setId] = useState("");
+  const [hasLoggedIn, setHasLoggedIn] = useState(false);
 
   useEffect(() => {
     if (makeRequest) {
       async function getData(): Promise<User[]> {
         const newUrl = `${url}${endpoint}`;
+        const token = localStorage.getItem("accessToken") || "";
         const request: Request = {
           method: method,
           headers: {
             "Content-Type": "application/json",
+            Authorization: token,
           },
         };
+        const isAuthRoute =
+          endpoint === "login" ||
+          endpoint === "signup" ||
+          endpoint === "logout";
         if (method === "POST" || method === "PUT") {
           request.body = body;
+        }
+        if (!isAuthRoute) {
+          request.request = { credentials: "include" };
         }
         const newData = [...data];
         const index = newData.findIndex((user: User) => user.id === id);
         const response = await fetch(newUrl, request);
-        const result = await response.json();
-        if (result.error) {
-          return result.error;
+        const result = (await response.json()) || {};
+
+        if (!response.ok) {
+          return result;
         } else if (response.ok) {
           if (method === "PUT") {
             newData.splice(index, 1, result[0]);
@@ -86,9 +101,10 @@ export function DataProvider({ children }: { children: ReactNode }) {
             if (endpoint === "users") {
               newData.unshift(result[0]);
               setData(newData);
-            }
-            if (endpoint === "login") {
-              localStorage.setItem("accessToken", result.token);
+            } else if (endpoint === "login") {
+              localStorage.setItem("accessToken", result.accessToken);
+              setEndpoint("users");
+              setHasLoggedIn(true);
               router.push("/dashboard");
             } else if (endpoint === "signup") {
               router.push("/login");
@@ -108,7 +124,13 @@ export function DataProvider({ children }: { children: ReactNode }) {
       getData();
       setMakeRequest(false);
     }
-  }, [makeRequest, method, id, body, endpoint, data]);
+    if (hasLoggedIn) {
+      setHasLoggedIn(false);
+      setMakeRequest(true);
+      setMethod("GET");
+      setEndpoint("users");
+    }
+  }, [makeRequest, method, id, body, endpoint, hasLoggedIn, data]);
 
   const updateEndpoint = (
     method: string,
@@ -119,18 +141,24 @@ export function DataProvider({ children }: { children: ReactNode }) {
     setMethod(method);
     setBody(body);
     setId(id);
+    let newEndpoint = "";
     if (method === "PUT" || method === "DELETE") {
-      setEndpoint(`users/${id}`);
+      newEndpoint = `users/${id}`;
+      setEndpoint(newEndpoint);
     } else if (authType) {
-      setEndpoint(authType.toLowerCase());
+      newEndpoint = authType.toLowerCase();
+      setEndpoint(newEndpoint);
     } else if (body) {
-      setEndpoint("users");
+      newEndpoint = "users";
+      setEndpoint(newEndpoint);
     }
     setMakeRequest(true);
   };
 
   return (
-    <DataContext.Provider value={{ data, endpoint, updateEndpoint }}>
+    <DataContext.Provider
+      value={{ data, endpoint, updateEndpoint, hasLoggedIn }}
+    >
       {children}
     </DataContext.Provider>
   );

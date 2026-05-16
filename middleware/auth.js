@@ -1,18 +1,24 @@
 import supabase from "../config/supabaseClient.js";
+import { NextResponse } from "next/server.js";
 
 export const protect = async (req, res, next) => {
-  const authHeader = req.headers.authorization;
-  
-  const token = authHeader && authHeader.split(' ')[1];
-  if (!token) {
-    return res.status(401).json({ success: false, message: "No token provided" });
-  }
+  try {
+    const token = req.headers.authorization;
+    if (!token) {
+      console.log("Request blocked: No cookie header present.");
+      return res
+        .status(401)
+        .json({ message: "Not authorized, cookies missing" });
+    }
 
-  const { data: { user }, error } = await supabase.auth.getUser(token);
-  if (error || !user) {
-    return res.status(401).json({ success: false, message: "Invalid or expired token" });
+    req.token = token;
+    return next();
+  } catch (error) {
+    console.error("Middleware system crash:", error);
+    return res.status(401).json({ message: "Internal authorization error" });
   }
+};
 
-  req.user = user;
-  next();
+export const config = {
+  matcher: ["/dashboard"],
 };
