@@ -66,7 +66,6 @@ router.post(
   signIn,
 );
 router.post("/logout", signOut);
-router.use(protect);
 /**
  * @swagger
  * components:
@@ -137,8 +136,8 @@ router.use(protect);
  *       500:
  *         description: Server error
  */
-router.post("/users", addUser);
-router.get("/users", fetchUsers);
+router.post("/users", protect, addUser);
+router.get("/users", protect, fetchUsers);
 
 /**
  * @swagger
@@ -167,7 +166,7 @@ router.get("/users", fetchUsers);
  *       500:
  *         description: Server error
  */
-router.get("/users/search", findUsers);
+router.get("/users/search", protect, findUsers);
 
 /**
  * @swagger
@@ -236,9 +235,9 @@ router.get("/users/search", findUsers);
  *       500:
  *         description: Server error
  */
-router.get("/users/:id", fetchUserById);
-router.put("/users/:id", modifyUser);
-router.delete("/users/:id", removeUser);
+router.get("/users/:id", protect, fetchUserById);
+router.put("/users/:id", protect, modifyUser);
+router.delete("/users/:id", protect, removeUser);
 
 /**
  * @swagger
@@ -265,6 +264,6 @@ router.delete("/users/:id", removeUser);
  *       500:
  *         description: Server error
  */
-router.get("/users/email/:email", fetchUserByEmail);
+router.get("/users/email/:email", protect, fetchUserByEmail);
 
 export default router;
