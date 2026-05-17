@@ -18,6 +18,16 @@ export function AddData() {
   const [emailInput, setEmailInput] = useState("");
   const [ageInput, setAgeInput] = useState(18);
   const { updateEndpoint } = useData();
+  const inputData = [
+    { label: "Name", type: "text", value: nameInput, onChange: setNameInput },
+    {
+      label: "Email",
+      type: "email",
+      value: emailInput,
+      onChange: setEmailInput,
+    },
+    { label: "Age", type: "number", value: ageInput, onChange: setAgeInput },
+  ];
   const handleSubmit = (event: React.ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
     const body = {
@@ -53,30 +63,19 @@ export function AddData() {
       </div>
       <CollapsibleContent className="flex flex-col gap-2">
         <form onSubmit={handleSubmit}>
-          <div className="rounded-md border px-4 py-2 text-sm">
-            <Label htmlFor="name">Name</Label>
-            <Input
-              type="text"
-              value={nameInput}
-              onChange={(event: any) => setNameInput(event?.target.value)}
-            />
-          </div>
-          <div className="rounded-md border px-4 py-2 text-sm">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              type="email"
-              value={emailInput}
-              onChange={(event: any) => setEmailInput(event?.target.value)}
-            />
-          </div>
-          <div className="rounded-md border px-4 py-2 text-sm">
-            <Label htmlFor="age">Age</Label>
-            <Input
-              type="number"
-              value={ageInput}
-              onChange={(event: any) => setAgeInput(event?.target.value)}
-            />
-          </div>
+          {inputData.map((input) => {
+            const { label, type, value, onChange } = input;
+            return (
+              <div key={label} className="rounded-md border px-4 py-2 text-sm">
+                <Label htmlFor={label}>{label}</Label>
+                <Input
+                  type={type}
+                  value={value}
+                  onChange={(event: any) => onChange(event?.target.value)}
+                />
+              </div>
+            );
+          })}
           <Button variant="outline">Submit</Button>
         </form>
       </CollapsibleContent>

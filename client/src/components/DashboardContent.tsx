@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import { columns } from "@/app/dashboard/columns";
 import { DataTable } from "@/app/dashboard/data-table";
 import { AddData } from "@/components/AddData";
-import Logout from "./Logout";
 
 import { useData } from "@/contexts/DataContext";
 export default function DashboardContent() {
@@ -15,7 +14,6 @@ export default function DashboardContent() {
 
   return (
     <div className="flex flex-col gap-2 container mx-auto py-10 px-4 border border-solid box-border">
-      <Logout />
       <AddData />
       <DataTable
         columns={columns}

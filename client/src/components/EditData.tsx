@@ -25,6 +25,27 @@ export function EditData({ data }: EditProps) {
   const [statusInput, setStatusInput] = useState(status || "");
   const [assigned, setAssigned] = useState(assigned_to || "");
   const { updateEndpoint } = useData();
+  const inputData = [
+    { label: "Name", type: "text", value: nameInput, onChange: setNameInput },
+    {
+      label: "Email",
+      type: "email",
+      value: emailInput,
+      onChange: setEmailInput,
+    },
+    {
+      label: "Status",
+      type: "string",
+      value: statusInput,
+      onChange: setStatusInput,
+    },
+    {
+      label: "Assigned To",
+      type: "text",
+      value: assigned,
+      onChange: setAssigned,
+    },
+  ];
   const handleSubmit = (event: React.ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
     const body = {
@@ -46,37 +67,27 @@ export function EditData({ data }: EditProps) {
         </PopoverHeader>
         <form onSubmit={handleSubmit} className="grid gap-4">
           <div className="grid gap-2">
-            <div className="grid grid-cols-3 items-center gap-4">
-              <Label htmlFor="width">Name</Label>
-              <Input
-                id="width"
-                value={nameInput}
-                onChange={(event: any) => setNameInput(event?.target.value)}
-                className="col-span-2 h-8"
-              />
-            </div>
-            <div className="grid grid-cols-3 items-center gap-4">
-              <Label htmlFor="maxWidth">Email</Label>
-              <Input
-                id="maxWidth"
-                value={emailInput}
-                onChange={(event: any) => setEmailInput(event?.target.value)}
-                className="col-span-2 h-8"
-              />
-            </div>
-            <div className="grid grid-cols-3 items-center gap-4">
-              <Label htmlFor="height">Status</Label>
-              <StatusDropdown setStatusInput={setStatusInput} />
-            </div>
-            <div className="grid grid-cols-3 items-center gap-4">
-              <Label htmlFor="maxHeight">Assigned To</Label>
-              <Input
-                id="maxHeight"
-                value={assigned}
-                onChange={(event: any) => setAssigned(event?.target.value)}
-                className="col-span-2 h-8"
-              />
-            </div>
+            {inputData.map((input) => {
+              const { label, type, value, onChange } = input;
+              return (
+                <div
+                  key={label}
+                  className="grid grid-cols-3 items-center gap-4"
+                >
+                  <Label htmlFor={label}>{label}</Label>
+                  {label === "Status" ? (
+                    <StatusDropdown setStatusInput={setStatusInput} />
+                  ) : (
+                    <Input
+                      type={type}
+                      value={value}
+                      onChange={(event: any) => onChange(event?.target.value)}
+                      className="col-span-2 h-8"
+                    />
+                  )}
+                </div>
+              );
+            })}
           </div>
           <Button className="border border-solid">Save</Button>
         </form>

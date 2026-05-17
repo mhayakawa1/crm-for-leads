@@ -7,7 +7,6 @@ import {
   useState,
   useEffect,
   ReactNode,
-  useRef,
 } from "react";
 
 export interface ContextData {
@@ -19,7 +18,6 @@ export interface ContextData {
     id: string,
     authType?: string,
   ) => void;
-  hasLoggedIn: boolean;
 }
 
 export type User = {
@@ -103,6 +101,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
               setData(newData);
             } else if (endpoint === "login") {
               localStorage.setItem("accessToken", result.accessToken);
+              localStorage.setItem("user", JSON.stringify(result.user));
               setEndpoint("users");
               setHasLoggedIn(true);
               router.push("/dashboard");
@@ -156,9 +155,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <DataContext.Provider
-      value={{ data, endpoint, updateEndpoint, hasLoggedIn }}
-    >
+    <DataContext.Provider value={{ data, endpoint, updateEndpoint }}>
       {children}
     </DataContext.Provider>
   );

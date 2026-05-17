@@ -36,7 +36,6 @@ router.post(
         password,
       });
       if (error) return res.status(400).json({ error: error.message });
-
       const { access_token, refresh_token } = data.session;
       const tokenCookie = serialize("sb-access-token", access_token, {
         httpOnly: true,
@@ -54,8 +53,10 @@ router.post(
         maxAge: 60 * 60 * 24 * 7,
       });
       res.setHeader("Set-Cookie", [tokenCookie, refreshCookie]);
+
       return res.json({
         success: true,
+        user: data.user.user_metadata,
         accessToken: access_token,
       });
     } catch (err) {
