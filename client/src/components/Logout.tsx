@@ -1,16 +1,14 @@
 "use client";
-import { Button } from "@/components//ui/button";
-import { useData } from "@/contexts/DataContext";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function Logout() {
-  const { updateEndpoint } = useData();
-
+  const { submitRequest } = useAuth()
   return (
-    <Button
-      onClick={() => updateEndpoint("POST", "", "", "logout")}
-      className="w-full h-full bg-gray text-end pt-1 pb-2 hover:text-gray-500"
+    <button
+      onClick={() => submitRequest("logout")}
+      className="w-full h-full bg-gray text-center pt-1 pb-2 hover:text-gray-500 focus:outline-none focus:!ring-0 focus:!border-none hover:!border-none hover:!ring-0 hover:!outline-none"
     >
       Logout
-    </Button>
+    </button>
   );
 }

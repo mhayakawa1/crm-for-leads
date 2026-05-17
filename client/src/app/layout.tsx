@@ -1,6 +1,6 @@
 "use client";
 import "./../index.css";
-import { DataProvider } from "@/contexts/DataContext";
+import { AuthProvider } from "@/contexts/AuthContext";
 
 export default function RootLayout({
   children,
@@ -10,7 +10,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="flex items-start justify-center min-h-screen bg-gray-100 antialiased">
-        <DataProvider>{children}</DataProvider>
+        <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
   );

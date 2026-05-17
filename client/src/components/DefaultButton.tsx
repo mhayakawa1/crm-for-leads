@@ -14,7 +14,7 @@ export const DefaultButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         id={id}
         variant="outline"
-        className={`${className} border hover:border-gray-500 bg-gray-100 hover:bg-white hover:text-gray-500`}
+        className={`border hover:border-gray-500 bg-gray-100 hover:bg-white hover:text-gray-500 ${className}`}
         {...props}
       >
         {children}

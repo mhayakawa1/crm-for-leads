@@ -59,7 +59,7 @@ export function EditData({ data }: EditProps) {
   };
   return (
     <Popover>
-      <PopoverTrigger asChild className="bg-gray-300">
+      <PopoverTrigger asChild>
         <DefaultButton>
           <Edit />
         </DefaultButton>

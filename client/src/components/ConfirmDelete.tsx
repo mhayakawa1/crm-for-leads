@@ -35,13 +35,10 @@ export function ConfirmDelete({ data }: DeleteProps) {
   };
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild className="bg-gray-300">
-        <Button
-          variant="outline"
-          className="border hover:border-gray-500 bg-gray-100 hover:bg-white hover:text-gray-500"
-        >
+      <PopoverTrigger asChild>
+        <DefaultButton>
           <Trash />
-        </Button>
+        </DefaultButton>
       </PopoverTrigger>
       <PopoverContent
         className="bg-white border border-gray-300 shadow-sm"
