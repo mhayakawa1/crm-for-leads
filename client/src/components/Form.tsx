@@ -1,16 +1,12 @@
 "use client";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components//ui/button";
 import { useData } from "@/contexts/DataContext";
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
+import { DefaultButton } from "./DefaultButton";
 
 interface FormProps {
   title: string;
@@ -71,12 +67,12 @@ export default function Form({ title }: FormProps) {
   };
 
   return (
-    <Card className="border w-full m-auto max-w-sm h-fit">
+    <Card className="border border-gray-300 bg-white shadow-sm w-full m-auto max-w-sm h-fit">
       <CardHeader>
         <CardTitle>{title}</CardTitle>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div className="flex flex-col gap-6">
             {inputData.slice(Number(!isSignup)).map((input) => {
               const { label, type, placeholder, value, onChange } = input;
@@ -98,6 +94,7 @@ export default function Form({ title }: FormProps) {
                       value={value}
                       onChange={(event: any) => onChange(event?.target.value)}
                       required
+                      className="border border-gray-300"
                     />
                     {label === "Password" ? (
                       <Button
@@ -112,7 +109,10 @@ export default function Form({ title }: FormProps) {
               );
             })}
           </div>
-          <Button variant="outline">{title}</Button>
+          <DefaultButton
+           >
+            {title}
+          </DefaultButton>
         </form>
       </CardContent>
     </Card>

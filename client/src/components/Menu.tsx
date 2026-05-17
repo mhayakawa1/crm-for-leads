@@ -1,9 +1,5 @@
 "use client";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuGroup,
@@ -30,7 +26,7 @@ export default function Menu() {
   }, []);
 
   return (
-    <div className="flex justify-end w-full">
+    <div className="flex justify-end w-full pt-4">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button className="p-0 rounded-full w-fit">
@@ -41,7 +37,7 @@ export default function Menu() {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent
-          className="w-fit text-right bg-white border p-0"
+          className="w-fit text-right bg-white border border-gray-300 p-0"
           align="end"
         >
           <DropdownMenuGroup className="flex flex-col items-end p-4">

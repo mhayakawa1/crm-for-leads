@@ -5,9 +5,11 @@ import {
   PopoverTitle,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { Trash } from "lucide-react";
 import { Button } from "./ui/button";
 import { useData } from "@/contexts/DataContext";
 import { useState } from "react";
+import { DefaultButton } from "./DefaultButton";
 
 interface DeleteProps {
   data: any;
@@ -34,21 +36,25 @@ export function ConfirmDelete({ data }: DeleteProps) {
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild className="bg-gray-300">
-        <Button variant="outline">X</Button>
+        <Button
+          variant="outline"
+          className="border hover:border-gray-500 bg-gray-100 hover:bg-white hover:text-gray-500"
+        >
+          <Trash />
+        </Button>
       </PopoverTrigger>
-      <PopoverContent className="bg-white border border-solid">
+      <PopoverContent
+        className="bg-white border border-gray-300 shadow-sm"
+        align="end"
+      >
         <PopoverHeader>
           <PopoverTitle>
             Are you sure you want to delete this item?
           </PopoverTitle>
         </PopoverHeader>
         <form onSubmit={handleSubmit} className="flex justify-between w-full">
-          <Button id="cancel" className="bg-gray-300 border border-solid">
-            Cancel
-          </Button>
-          <Button id="delete" className="bg-gray-300 border border-solid">
-            Delete
-          </Button>
+          <DefaultButton id="cancel">Cancel</DefaultButton>
+          <DefaultButton id="delete">Delete</DefaultButton>
         </form>
       </PopoverContent>
     </Popover>

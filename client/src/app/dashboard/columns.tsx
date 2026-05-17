@@ -40,6 +40,7 @@ export const columns: ColumnDef<User>[] = [
     header: "Status",
   },
   {
+    id: "assigned",
     accessorKey: "assigned_to",
     header: ({ column }) => {
       return (

@@ -6,13 +6,14 @@ import {
   PopoverTitle,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Button } from "./ui/button";
+import { Edit } from "lucide-react";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { User } from "@/contexts/DataContext";
 import { StatusDropdown } from "./StatusDropdown";
 import { useData } from "@/contexts/DataContext";
 import { useState } from "react";
+import { DefaultButton } from "./DefaultButton";
 
 interface EditProps {
   data: User;
@@ -59,9 +60,14 @@ export function EditData({ data }: EditProps) {
   return (
     <Popover>
       <PopoverTrigger asChild className="bg-gray-300">
-        <Button variant="outline">Edit</Button>
+        <DefaultButton>
+          <Edit />
+        </DefaultButton>
       </PopoverTrigger>
-      <PopoverContent className="bg-white border border-solid">
+      <PopoverContent
+        className="bg-white border border-gray-300 shadow-sm"
+        align="end"
+      >
         <PopoverHeader>
           <PopoverTitle>Edit Data</PopoverTitle>
         </PopoverHeader>
@@ -82,14 +88,14 @@ export function EditData({ data }: EditProps) {
                       type={type}
                       value={value}
                       onChange={(event: any) => onChange(event?.target.value)}
-                      className="col-span-2 h-8"
+                      className="col-span-2 h-8 border border-gray-300"
                     />
                   )}
                 </div>
               );
             })}
           </div>
-          <Button className="border border-solid">Save</Button>
+          <DefaultButton>Save</DefaultButton>
         </form>
       </PopoverContent>
     </Popover>

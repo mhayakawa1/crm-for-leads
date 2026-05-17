@@ -9,7 +9,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="flex items-start justify-center min-h-screen bg-background antialiased">
+      <body className="flex items-start justify-center min-h-screen bg-gray-100 antialiased">
         <DataProvider>{children}</DataProvider>
       </body>
     </html>

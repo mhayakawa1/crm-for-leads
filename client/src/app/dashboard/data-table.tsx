@@ -55,7 +55,7 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div className="m-auto overflow-hidden rounded-md border w-full">
+    <div className="m-auto overflow-hidden rounded-md bg-white border border-solid border-gray-300 shadow-sm w-full">
       <div className="flex items-center py-4">
         <FilterDropdown setFilterBy={setFilterBy} />
         <Input
@@ -64,13 +64,13 @@ export function DataTable<TData, TValue>({
           onChange={(event) =>
             table.getColumn(filterBy)?.setFilterValue(event.target.value)
           }
-          className="max-w-sm"
+          className="max-w-sm grow-1 border border-gray-300"
         />
       </div>
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup: any) => (
-            <TableRow key={headerGroup.id}>
+            <TableRow key={headerGroup.id} className="border-b border-gray-300">
               {headerGroup.headers.map((header: any) => {
                 return (
                   <TableHead key={header.id}>
@@ -92,13 +92,17 @@ export function DataTable<TData, TValue>({
               <TableRow
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
+                className="border border-gray-300"
               >
                 {row.getVisibleCells().map((cell: any) => (
                   <TableCell key={cell.id}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}
-                <TableCell key="buttons">
+                <TableCell
+                  key="buttons"
+                  className="w-fit flex justify-between gap-[8px]"
+                >
                   <EditData data={row.original} />
                   <ConfirmDelete data={row.original} />
                 </TableCell>

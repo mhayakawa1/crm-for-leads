@@ -7,9 +7,10 @@ import {
 } from "@/components/ui/collapsible";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
-import { Plus } from "lucide-react";
+import { Plus, X } from "lucide-react";
 import { useState } from "react";
 import { useData } from "@/contexts/DataContext";
+import { DefaultButton } from "./DefaultButton";
 
 export function AddData() {
   const [isOpen, setIsOpen] = useState(false);
@@ -50,33 +51,37 @@ export function AddData() {
     <Collapsible
       open={isOpen}
       onOpenChange={setIsOpen}
-      className="flex w-full flex-col gap-2 border border-solid"
+      className="flex w-full flex-col gap-2 bg-white rounded-md border border-gray-300 drop-shadow-sm"
     >
-      <div className="flex items-center justify-between gap-4 px-4">
+      <div className="flex items-center justify-between gap-4 px-4 py-2">
         <h4 className="text-sm font-semibold">Add User</h4>
         <CollapsibleTrigger asChild>
           <Button variant="ghost" size="icon" className="size-8">
             <span className="sr-only">Toggle details</span>
-            <Plus />
+            {isOpen ? <X /> : <Plus />}
           </Button>
         </CollapsibleTrigger>
       </div>
-      <CollapsibleContent className="flex flex-col gap-2">
-        <form onSubmit={handleSubmit}>
+      <CollapsibleContent className="flex flex-col items-center w-full">
+        <form
+          onSubmit={handleSubmit}
+          className="px-4 pb-4 w-full max-w-[500px]"
+        >
           {inputData.map((input) => {
             const { label, type, value, onChange } = input;
             return (
-              <div key={label} className="rounded-md border px-4 py-2 text-sm">
+              <div key={label} className="py-2 text-sm flex flex-col gap-2">
                 <Label htmlFor={label}>{label}</Label>
                 <Input
                   type={type}
                   value={value}
                   onChange={(event: any) => onChange(event?.target.value)}
+                  className="border border-gray-300"
                 />
               </div>
             );
           })}
-          <Button variant="outline">Submit</Button>
+          <DefaultButton className="mt-2 w-full">Submit</DefaultButton>
         </form>
       </CollapsibleContent>
     </Collapsible>

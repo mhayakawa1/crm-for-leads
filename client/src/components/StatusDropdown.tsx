@@ -23,7 +23,7 @@ export function StatusDropdown({ setStatusInput }: DropdownProps) {
           <ChevronDown />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="bg-white border border-solid">
+      <DropdownMenuContent className="bg-white border border-gray-300 shadow-sm">
         <form onSubmit={(event) => event.preventDefault()}>
           {statuses.map((status: string) => (
             <DropdownMenuItem
