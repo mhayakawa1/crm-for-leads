@@ -140,16 +140,12 @@ export function DataProvider({ children }: { children: ReactNode }) {
     setMethod(method);
     setBody(body);
     setId(id);
-    let newEndpoint = "";
     if (method === "PUT" || method === "DELETE") {
-      newEndpoint = `users/${id}`;
-      setEndpoint(newEndpoint);
+      setEndpoint(`users/${id}`);
     } else if (authType) {
-      newEndpoint = authType.toLowerCase();
-      setEndpoint(newEndpoint);
+      setEndpoint(authType.toLowerCase());
     } else if (body) {
-      newEndpoint = "users";
-      setEndpoint(newEndpoint);
+      setEndpoint("users");
     }
     setMakeRequest(true);
   };

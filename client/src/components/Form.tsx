@@ -7,9 +7,12 @@ import { useData } from "@/contexts/DataContext";
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import { DefaultButton } from "./DefaultButton";
+import Link from "next/link";
 
 interface FormProps {
   title: string;
+  linkText: string;
+  href: string;
 }
 
 interface Body {
@@ -18,7 +21,7 @@ interface Body {
   name?: string;
 }
 
-export default function Form({ title }: FormProps) {
+export default function Form({ title, linkText, href }: FormProps) {
   const { updateEndpoint } = useData();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -109,10 +112,10 @@ export default function Form({ title }: FormProps) {
               );
             })}
           </div>
-          <DefaultButton
-           >
-            {title}
-          </DefaultButton>
+          <DefaultButton>{title}</DefaultButton>
+          <Link href={`/${href}`} className="mx-auto hover:underline">
+            {linkText}
+          </Link>
         </form>
       </CardContent>
     </Card>
