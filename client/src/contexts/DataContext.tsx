@@ -1,5 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
+import { url } from "./AuthContext";
 import {
   createContext,
   useContext,
@@ -46,8 +47,6 @@ export interface Request {
   request?: { credentials: string };
   body?: string;
 }
-
-export const url = "http://localhost:5000/api/";
 
 const DataContext = createContext<ContextData | undefined>(undefined);
 

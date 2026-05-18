@@ -3,11 +3,11 @@ import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Button } from "@/components//ui/button";
+import { Button } from "@/components/ui/button";
 import Error from "./Error";
 import { useAuth } from "@/contexts/AuthContext";
 import { Eye, EyeOff, CheckCircle } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { DefaultButton } from "./DefaultButton";
 import Link from "next/link";
 
@@ -107,7 +107,7 @@ export default function Form({ title, linkText, href }: FormProps) {
                       }
                       placeholder={placeholder}
                       value={value}
-                      onChange={(event: any) => onChange(event?.target.value)}
+                      onChange={(event: React.ChangeEvent<HTMLInputElement>) => onChange(event?.target.value)}
                       required
                       className="border border-gray-300"
                     />
@@ -125,7 +125,7 @@ export default function Form({ title, linkText, href }: FormProps) {
             })}
           </div>
           <DefaultButton>{title}</DefaultButton>
-        </form>{" "}
+        </form>
         {isSuccessful && isSignup ? (
           <form
             onSubmit={goToLogin}

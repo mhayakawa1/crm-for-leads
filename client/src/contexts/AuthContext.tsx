@@ -1,6 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { Body, User, url } from "./DataContext";
+import { Body, User } from "./DataContext";
 import {
   createContext,
   useContext,
@@ -10,11 +10,18 @@ import {
 } from "react";
 
 export interface ContextData {
-  user: any;
-  submitRequest: any;
+  user: {
+    email: string;
+    email_verified: boolean;
+    name: string;
+    phone_verified: boolean;
+    sub: string;
+  } | null;
+  submitRequest: (requestType: string, body?: Body | null) => void;
   isSuccessful: boolean;
   errorMessage: string;
 }
+
 export interface Request {
   method: string;
   headers: {
@@ -22,6 +29,9 @@ export interface Request {
   };
   body?: string;
 }
+
+export const url = 'http://localhost:5000/api/'
+
 const AuthContext = createContext<ContextData | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
@@ -79,7 +89,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, [hasSubmitted, endpoint]);
 
-  const submitRequest = (requestType: string, body: Body | null) => {
+  const submitRequest = (requestType: string, body?: Body | null) => {
     setHasSubmitted(true);
     setEndpoint(requestType.toLowerCase());
     setBody(JSON.stringify(body));
