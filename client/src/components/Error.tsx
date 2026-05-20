@@ -7,9 +7,11 @@ interface ErrorProps {
 
 export default function Error({ errorMessage }: ErrorProps) {
   return (
-    <Alert className="border-none bg-red-200 text-red-500">
-      <AlertCircle />
-      <AlertTitle>Error</AlertTitle>
+    <Alert className="border-none flex flex-col gap-2 items-center bg-red-200 text-red-500">
+      <div className="flex justify-center gap-1 items-end">
+        <AlertCircle />
+        <AlertTitle>Error</AlertTitle>
+      </div>
       <AlertDescription>{errorMessage}</AlertDescription>
     </Alert>
   );

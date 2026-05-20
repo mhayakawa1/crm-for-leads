@@ -14,6 +14,7 @@ export const columns: ColumnDef<User>[] = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="px-0"
         >
           Name
           <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -28,6 +29,7 @@ export const columns: ColumnDef<User>[] = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="px-0"
         >
           Email
           <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -37,7 +39,9 @@ export const columns: ColumnDef<User>[] = [
   },
   {
     accessorKey: "status",
-    header: "Status",
+    header: () => {
+      return <div>Status</div>;
+    },
   },
   {
     id: "assigned",
@@ -46,6 +50,7 @@ export const columns: ColumnDef<User>[] = [
       return (
         <Button
           variant="ghost"
+          className="px-0"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           Assigned To
