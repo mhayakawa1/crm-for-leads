@@ -10,6 +10,7 @@ import {
   loginUser,
   registerUser,
 } from "../services/userService.js";
+import bcrypt from "bcryptjs";
 import supabase from "../config/supabaseClient.js";
 
 export const addUser = async (req, res) => {
@@ -101,10 +102,16 @@ export const findUsers = async (req, res) => {
   }
 };
 
+async function hashPassword(plainPassword) {
+  const saltRounds = 10;
+  const hashedPassword = await bcrypt.hash(plainPassword, saltRounds);
+  return hashedPassword;
+}
+
 export const signUp = async (req, res) => {
   try {
     const { email, password, name, age } = req.body;
-
+    // const hashedPassword = await hashPassword(password);
     const data = await registerUser(email, password, { name, age });
 
     res.status(201).json({
@@ -117,10 +124,19 @@ export const signUp = async (req, res) => {
   }
 };
 
+async function verifyPassword(enteredPassword, storedHash) {
+  const isMatch = await bcrypt.compare(enteredPassword, storedHash);
+
+  if (isMatch) {
+    return true;
+  } else {
+    console.log("Invalid password.");
+  }
+}
+
 export const signIn = async (req, res) => {
   try {
     const { email, password } = req.body;
-
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
