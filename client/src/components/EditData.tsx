@@ -14,6 +14,7 @@ import { StatusDropdown } from "./StatusDropdown";
 import { useData } from "@/contexts/DataContext";
 import { useState } from "react";
 import { DefaultButton } from "./DefaultButton";
+import { useEffect } from "react";
 
 interface EditProps {
   data: User;
@@ -57,6 +58,16 @@ export function EditData({ data }: EditProps) {
     };
     updateEndpoint("PUT", JSON.stringify(body), id);
   };
+
+  useEffect(() => {
+    setNameInput(name);
+    setEmailInput(email);
+    setStatusInput(status);
+    setAssigned(assigned_to || "");
+    const values = [name, email, status, assigned];
+    inputData.map((input, index) => (input.value = values[index]));
+  }, [data]);
+
   return (
     <Popover>
       <PopoverTrigger asChild>

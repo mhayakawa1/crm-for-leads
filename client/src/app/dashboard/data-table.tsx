@@ -73,10 +73,7 @@ export function DataTable<TData, TValue>({
             <TableRow key={headerGroup.id} className="border-b border-gray-300">
               {headerGroup.headers.map((header: any) => {
                 return (
-                  <TableHead
-                    key={header.id}
-                    className="pl-4"
-                  >
+                  <TableHead key={header.id} className="pl-4">
                     {header.isPlaceholder
                       ? null
                       : flexRender(
@@ -91,29 +88,39 @@ export function DataTable<TData, TValue>({
         </TableHeader>
         <TableBody>
           {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row: any) => (
-              <TableRow
-                key={row.id}
-                data-state={row.getIsSelected() && "selected"}
-                className="border border-gray-300"
-              >
-                {row.getVisibleCells().map((cell: any) => (
-                  <TableCell
-                    key={cell.id}
-                    className="pl-4"
-                  >
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
-                <TableCell
-                  key="buttons"
-                  className="w-fit flex justify-between gap-[8px]"
+            table.getRowModel().rows.map((row: any) => {
+              return (
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && "selected"}
+                  className="border border-gray-300"
                 >
-                  <EditData data={row.original} />
-                  <ConfirmDelete data={row.original} />
-                </TableCell>
-              </TableRow>
-            ))
+                  {row.getVisibleCells().map((cell: any) => {
+                    const date = new Date(
+                      row.original.created_at,
+                    ).toUTCString();
+
+                    return (
+                      <TableCell key={cell.id} className="pl-4">
+                        {cell.id.includes("created_at")
+                          ? date
+                          : flexRender(
+                              cell.column.columnDef.cell,
+                              cell.getContext(),
+                            )}
+                      </TableCell>
+                    );
+                  })}
+                  <TableCell
+                    key="buttons"
+                    className="w-fit flex justify-between gap-[8px]"
+                  >
+                    <EditData data={row.original} />
+                    <ConfirmDelete data={row.original} />
+                  </TableCell>
+                </TableRow>
+              );
+            })
           ) : (
             <TableRow>
               <TableCell colSpan={columns.length} className="h-24 text-center">
