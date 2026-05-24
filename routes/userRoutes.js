@@ -15,6 +15,7 @@ import {
   signIn,
   signOut,
 } from "../controllers/userController.js";
+import jwt from "jsonwebtoken";
 import { protect } from "../middleware/auth.js";
 
 const supabase = createClient(
@@ -37,27 +38,15 @@ router.post(
       });
       if (error) return res.status(400).json({ error: error.message });
       const { access_token, refresh_token } = data.session;
-      const tokenCookie = serialize("sb-access-token", access_token, {
-        httpOnly: true,
-        secure: false,
-        sameSite: "lax",
-        path: "/",
-        maxAge: 60 * 60 * 24 * 7,
-      });
 
-      const refreshCookie = serialize("sb-refresh-token", refresh_token, {
-        httpOnly: true,
-        secure: false,
-        sameSite: "lax",
-        path: "/",
-        maxAge: 60 * 60 * 24 * 7,
+      const accessToken = jwt.sign(data.user.user_metadata, access_token, {
+        expiresIn: "1d",
       });
-      res.setHeader("Set-Cookie", [tokenCookie, refreshCookie]);
 
       return res.json({
         success: true,
         user: data.user.user_metadata,
-        accessToken: access_token,
+        accessToken: accessToken,
       });
     } catch (err) {
       return res.status(500).json({ error: err.message });

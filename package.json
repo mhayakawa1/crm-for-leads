@@ -24,6 +24,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.6.1",
     "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.3",
     "next": "^16.2.6",
     "react-router-dom": "^7.15.0",
     "swagger-jsdoc": "^6.2.8",
