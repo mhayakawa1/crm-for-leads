@@ -16,7 +16,7 @@ export interface ContextData {
     method: string,
     body: string,
     id: string,
-    authType?: string,
+    filter?: any,
   ) => void;
 }
 
@@ -48,16 +48,36 @@ export interface Request {
   body?: string;
 }
 
+interface Filters {
+  name: string;
+  email: string;
+  status: string;
+  assigned_to: string;
+  sortBy: string;
+  isAscending: boolean;
+  [key: string]: string | boolean | undefined;
+}
+
 const DataContext = createContext<ContextData | undefined>(undefined);
 
 export function DataProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
   const [data, setData] = useState<User[]>([]);
   const [makeRequest, setMakeRequest] = useState(true);
-  const [endpoint, setEndpoint] = useState("users");
+  const [endpoint, setEndpoint] = useState(
+    "users?sortBy=name&isAscending=true",
+  );
   const [method, setMethod] = useState("GET");
   const [body, setBody] = useState("");
   const [id, setId] = useState("");
+  const [filters, setFilters] = useState<Filters>({
+    name: "",
+    email: "",
+    status: "",
+    assigned_to: "",
+    sortBy: "name",
+    isAscending: true,
+  });
 
   useEffect(() => {
     const user = localStorage.getItem("user");
@@ -109,12 +129,33 @@ export function DataProvider({ children }: { children: ReactNode }) {
     }
   }, [makeRequest, method, id, body, endpoint, data]);
 
-  const updateEndpoint = (method: string, body: string, id: string) => {
+  const updateEndpoint = (
+    method: string,
+    body: string,
+    id: string,
+    filter?: string,
+  ) => {
     setMethod(method);
     setBody(body);
     setId(id);
     if (method === "PUT" || method === "DELETE") {
       setEndpoint(`users/${id}`);
+    } else if (filter) {
+      const newFilters = { ...filters };
+      Object.entries(filter).map((entry) => {
+        const [key, value] = entry;
+        newFilters[key] = value;
+      });
+      setFilters(newFilters);
+      let filterEndpoint = "users?";
+      Object.entries(newFilters)
+        .filter((entry) => entry[1] !== "")
+        .forEach((entry, index) => {
+          return (filterEndpoint =
+            filterEndpoint +
+            `${index !== 0 ? "&" : ""}${entry[0]}=${entry[1]}`);
+        });
+      setEndpoint(filterEndpoint);
     } else if (body) {
       setEndpoint("users");
     }

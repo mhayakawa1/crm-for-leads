@@ -22,6 +22,8 @@ import { EditData } from "@/components/EditData";
 import { ConfirmDelete } from "@/components/ConfirmDelete";
 import { Input } from "@/components/ui/input";
 import { FilterDropdown } from "@/components/FilterDropdown";
+import { FilterInput } from "@/components/FilterInput";
+
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
@@ -58,13 +60,9 @@ export function DataTable<TData, TValue>({
     <div className="m-auto overflow-hidden rounded-md bg-white border border-solid border-gray-300 shadow-sm w-full">
       <div className="flex items-center py-4">
         <FilterDropdown setFilterBy={setFilterBy} />
-        <Input
-          placeholder={`Filter by ${filterBy.toLowerCase()}...`}
+        <FilterInput
+          filterBy={filterBy}
           value={(table.getColumn(filterBy)?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn(filterBy)?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm grow-1 border border-gray-300"
         />
       </div>
       <Table>

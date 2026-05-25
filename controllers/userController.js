@@ -7,6 +7,7 @@ import {
   deleteUser,
   searchUsers,
   getFilteredUsers,
+  getSortedUsers,
   loginUser,
   registerUser,
 } from "../services/userService.js";
@@ -24,13 +25,24 @@ export const addUser = async (req, res) => {
 
 export const fetchUsers = async (req, res) => {
   try {
+    const {
+      name,
+      email,
+      age,
+      assigned_to,
+      status,
+      sortBy,
+      isAscending,
+    } = req.query;
     const filters = {
-      name: req.query.name,
-      age: req.query.age,
-      assigned_to: req.query.assigned_to,
-      status: req.query.status,
+      name: name,
+      email: email,
+      age: age,
+      assigned_to: assigned_to,
+      status: status,
+      sortBy: sortBy,
+      isAscending: isAscending,
     };
-
     const users = await getFilteredUsers(filters);
     res.status(200).json(users);
   } catch (error) {
@@ -104,7 +116,6 @@ export const findUsers = async (req, res) => {
 export const signUp = async (req, res) => {
   try {
     const { email, password, name, age } = req.body;
-
     const data = await registerUser(email, password, { name, age });
 
     res.status(201).json({
