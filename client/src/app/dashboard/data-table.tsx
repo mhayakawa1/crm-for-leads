@@ -20,9 +20,9 @@ import {
 } from "@/components/ui/table";
 import { EditData } from "@/components/EditData";
 import { ConfirmDelete } from "@/components/ConfirmDelete";
-import { Input } from "@/components/ui/input";
 import { FilterDropdown } from "@/components/FilterDropdown";
 import { FilterInput } from "@/components/FilterInput";
+import DetailsLink from "@/components/DetailsLink";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -113,6 +113,7 @@ export function DataTable<TData, TValue>({
                     key="buttons"
                     className="w-fit flex justify-between gap-[8px]"
                   >
+                    <DetailsLink id={row.original.id} />
                     <EditData data={row.original} />
                     <ConfirmDelete data={row.original} />
                   </TableCell>

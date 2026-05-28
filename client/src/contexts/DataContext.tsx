@@ -20,6 +20,17 @@ export interface ContextData {
   ) => void;
 }
 
+export interface Update {
+  time: string;
+  by: string;
+}
+
+export interface Note {
+  key: string;
+  note: string;
+  updates: Update[];
+}
+
 export type User = {
   id: string;
   name: string;
@@ -28,6 +39,7 @@ export type User = {
   createdAt: string;
   assigned_to: string | null;
   status: string;
+  notes: Note[];
 };
 
 export interface Body {

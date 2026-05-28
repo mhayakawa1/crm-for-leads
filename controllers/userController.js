@@ -25,15 +25,8 @@ export const addUser = async (req, res) => {
 
 export const fetchUsers = async (req, res) => {
   try {
-    const {
-      name,
-      email,
-      age,
-      assigned_to,
-      status,
-      sortBy,
-      isAscending,
-    } = req.query;
+    const { name, email, age, assigned_to, status, sortBy, isAscending } =
+      req.query;
     const filters = {
       name: name,
       email: email,

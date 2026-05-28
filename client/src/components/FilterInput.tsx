@@ -1,10 +1,7 @@
 "use client";
 import * as React from "react";
 import { useState } from "react";
-import { EditData } from "@/components/EditData";
-import { ConfirmDelete } from "@/components/ConfirmDelete";
 import { Input } from "@/components/ui/input";
-import { FilterDropdown } from "@/components/FilterDropdown";
 import { useData } from "@/contexts/DataContext";
 
 interface InputProps {
