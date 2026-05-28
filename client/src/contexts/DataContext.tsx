@@ -11,6 +11,7 @@ import {
 
 export interface ContextData {
   data: User[];
+  profiles: any;
   endpoint: string;
   updateEndpoint: (
     method: string,
@@ -74,8 +75,10 @@ const DataContext = createContext<ContextData | undefined>(undefined);
 
 export function DataProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
+  const [profiles, setProfiles] = useState<any>([]);
   const [data, setData] = useState<User[]>([]);
-  const [makeRequest, setMakeRequest] = useState(true);
+  const [requestProfiles, setRequestProfiles] = useState(true);
+  const [requestData, setRequestData] = useState(true);
   const [endpoint, setEndpoint] = useState(
     "users?sortBy=name&isAscending=true",
   );
@@ -93,20 +96,36 @@ export function DataProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const user = localStorage.getItem("user");
-    const token = localStorage.getItem("accessToken");
+    const token = localStorage.getItem("accessToken") || "";
+    const request: Request = {
+      method: method,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token,
+      },
+      request: { credentials: "include" },
+    };
     if (user && token) {
-      if (makeRequest) {
+      if (requestProfiles) {
+        async function getProfiles(): Promise<any> {
+          const newUrl = `${url}profiles`;
+          try {
+            const response = await fetch(newUrl, request);
+            const result = (await response.json()) || {};
+            if (response.ok) {
+              setProfiles(result);
+            }
+            return result;
+          } catch {
+            return [];
+          }
+        }
+        getProfiles();
+        setRequestProfiles(false);
+      }
+      if (requestData) {
         async function getData(): Promise<User[]> {
           const newUrl = `${url}${endpoint}`;
-          const token = localStorage.getItem("accessToken") || "";
-          const request: Request = {
-            method: method,
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: token,
-            },
-            request: { credentials: "include" },
-          };
           if (method === "POST" || method === "PUT") {
             request.body = body;
           }
@@ -134,12 +153,21 @@ export function DataProvider({ children }: { children: ReactNode }) {
           return result;
         }
         getData();
-        setMakeRequest(false);
+        setRequestData(false);
       }
     } else {
       router.push("/login");
     }
-  }, [makeRequest, method, id, body, endpoint, data]);
+  }, [
+    requestData,
+    requestProfiles,
+    profiles,
+    method,
+    id,
+    body,
+    endpoint,
+    data,
+  ]);
 
   const updateEndpoint = (
     method: string,
@@ -171,11 +199,11 @@ export function DataProvider({ children }: { children: ReactNode }) {
     } else if (body) {
       setEndpoint("users");
     }
-    setMakeRequest(true);
+    setRequestData(true);
   };
 
   return (
-    <DataContext.Provider value={{ data, endpoint, updateEndpoint }}>
+    <DataContext.Provider value={{ data, profiles, endpoint, updateEndpoint }}>
       {children}
     </DataContext.Provider>
   );

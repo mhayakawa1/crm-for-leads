@@ -14,6 +14,7 @@ import {
   signUp,
   signIn,
   signOut,
+  fetchProfiles
 } from "../controllers/userController.js";
 import jwt from "jsonwebtoken";
 import { protect } from "../middleware/auth.js";
@@ -255,4 +256,5 @@ router.delete("/users/:id", protect, removeUser);
  */
 router.get("/users/email/:email", protect, fetchUserByEmail);
 
+router.get("/profiles", protect, fetchProfiles);
 export default router;

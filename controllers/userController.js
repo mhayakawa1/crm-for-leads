@@ -10,6 +10,7 @@ import {
   getSortedUsers,
   loginUser,
   registerUser,
+  getProfiles,
 } from "../services/userService.js";
 import supabase from "../config/supabaseClient.js";
 
@@ -150,5 +151,14 @@ export const signOut = async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
+  }
+};
+
+export const fetchProfiles = async (req, res) => {
+  try {
+    const profiles = await getProfiles();
+    res.status(200).json(profiles);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 };

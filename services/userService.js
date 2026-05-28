@@ -151,3 +151,9 @@ export const loginUser = async (email, password) => {
 
   return data;
 };
+
+export const getProfiles = async () => {
+  const { data, error } = await supabase.from("profiles").select("*");
+  if (error) throw new Error(error.message);
+  return data;
+};
