@@ -10,7 +10,7 @@ import "./index.css";
 import Signup from "./app/signup/page";
 import Login from "./app/login/page";
 import Dashboard from "./app/dashboard/page";
-import Details from "./app/details/page";
+import Details from "./app/details/[id]/page";
 import Error from "./app/error/page";
 
 function App() {

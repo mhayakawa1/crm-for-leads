@@ -111,7 +111,7 @@ export default function DetailsContent() {
   return (
     <Card className="border border-gray-300 bg-white shadow-sm w-full m-auto max-w-sm h-fit">
       <CardHeader>
-        <Link href="dashboard" className="w-fit text-center hover:underline">
+        <Link href="/dashboard" className="w-fit text-center hover:underline">
           ← Dashboard
         </Link>
         <CardTitle>{userData.name}</CardTitle>
