@@ -26,16 +26,16 @@ export const addUser = async (req, res) => {
 
 export const fetchUsers = async (req, res) => {
   try {
-    const { name, email, age, assigned_to, status, sortBy, isAscending } =
+    const { name, email, age, status, sortBy, isAscending, assigned_id } =
       req.query;
     const filters = {
       name: name,
       email: email,
       age: age,
-      assigned_to: assigned_to,
       status: status,
       sortBy: sortBy,
       isAscending: isAscending,
+      assigned_id: assigned_id,
     };
     const users = await getFilteredUsers(filters);
     res.status(200).json(users);

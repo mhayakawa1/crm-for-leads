@@ -27,7 +27,7 @@ export default function DetailsContent() {
     email: "",
     age: 0,
     createdAt: "",
-    assigned_to: "",
+    assigned_to: { id: "", name: "", email: "" },
     status: "",
     notes: [],
   });
@@ -125,7 +125,10 @@ export default function DetailsContent() {
               return (
                 <li key={key}>
                   {key.charAt(0).toUpperCase() + key.slice(1).replace("_", " ")}
-                  : {value?.toString()}
+                  :
+                  {key === "assigned_to"
+                    ? `${userData.assigned_to.name} (${userData.assigned_to.email})`
+                    : value?.toString()}
                 </li>
               );
             })}

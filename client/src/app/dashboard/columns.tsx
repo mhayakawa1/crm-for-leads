@@ -27,7 +27,7 @@ export const columns: ColumnDef<User>[] = [
     id: "assigned_to",
     accessorKey: "assigned_to",
     header: () => {
-      return <FilterButton name="Assigned To" value="assigned_to" />;
+      return <div>Assigned To</div>
     },
   },
   {

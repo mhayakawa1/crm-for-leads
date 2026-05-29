@@ -32,13 +32,19 @@ export interface Note {
   updates: Update[];
 }
 
+export type AssignedTo = {
+  id: string;
+  name: string;
+  email: string;
+};
+
 export type User = {
   id: string;
   name: string;
   email: string;
   age: number;
   createdAt: string;
-  assigned_to: string | null;
+  assigned_to: AssignedTo;
   status: string;
   notes: Note[];
 };
@@ -65,7 +71,6 @@ interface Filters {
   name: string;
   email: string;
   status: string;
-  assigned_to: string;
   sortBy: string;
   isAscending: boolean;
   [key: string]: string | boolean | undefined;
@@ -89,7 +94,6 @@ export function DataProvider({ children }: { children: ReactNode }) {
     name: "",
     email: "",
     status: "",
-    assigned_to: "",
     sortBy: "name",
     isAscending: true,
   });
@@ -125,7 +129,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
       }
       if (requestData) {
         async function getData(): Promise<User[]> {
-          const newUrl = `${url}${endpoint}`;
+          const newUrl = `${url}${endpoint}&assigned_id=${JSON.parse(user || "").sub}`;
           if (method === "POST" || method === "PUT") {
             request.body = body;
           }

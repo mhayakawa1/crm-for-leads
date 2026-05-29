@@ -15,6 +15,7 @@ import { useData } from "@/contexts/DataContext";
 import { useState } from "react";
 import { DefaultButton } from "./DefaultButton";
 import { useEffect } from "react";
+import { AssignedDropdown } from "./AssignedDropdown";
 
 interface EditProps {
   data: User;
@@ -25,7 +26,9 @@ export function EditData({ data }: EditProps) {
   const [nameInput, setNameInput] = useState(name || "");
   const [emailInput, setEmailInput] = useState(email || "");
   const [statusInput, setStatusInput] = useState(status || "");
-  const [assigned, setAssigned] = useState(assigned_to || "");
+  const [assigned, setAssigned] = useState(
+    assigned_to || { id: "", name: "", email: "" },
+  );
   const { updateEndpoint } = useData();
   const inputData = [
     { label: "Name", type: "text", value: nameInput, onChange: setNameInput },
@@ -43,7 +46,7 @@ export function EditData({ data }: EditProps) {
     },
     {
       label: "Assigned To",
-      type: "text",
+      type: "input",
       value: assigned,
       onChange: setAssigned,
     },
@@ -63,7 +66,7 @@ export function EditData({ data }: EditProps) {
     setNameInput(name);
     setEmailInput(email);
     setStatusInput(status);
-    setAssigned(assigned_to || "");
+    setAssigned(assigned_to);
     const values = [name, email, status, assigned];
     inputData.map((input, index) => (input.value = values[index]));
   }, [data]);
@@ -94,10 +97,12 @@ export function EditData({ data }: EditProps) {
                   <Label htmlFor={label}>{label}</Label>
                   {label === "Status" ? (
                     <StatusDropdown setStatusInput={setStatusInput} />
+                  ) : label === "Assigned To" ? (
+                    <AssignedDropdown setAssignedInput={setAssigned} />
                   ) : (
                     <Input
                       type={type}
-                      value={value}
+                      value={typeof value === "string" ? value : ""}
                       onChange={(event: any) => onChange(event?.target.value)}
                       className="col-span-2 h-8 border border-gray-300"
                     />

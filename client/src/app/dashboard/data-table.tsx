@@ -97,15 +97,15 @@ export function DataTable<TData, TValue>({
                     const date = new Date(
                       row.original.created_at,
                     ).toUTCString();
-
+                    const { id, column, getContext } = cell;
+                    const { name, email } = row.original.assigned_to;
                     return (
-                      <TableCell key={cell.id} className="pl-4">
-                        {cell.id.includes("created_at")
+                      <TableCell key={id} className="pl-4">
+                        {id.includes("created_at")
                           ? date
-                          : flexRender(
-                              cell.column.columnDef.cell,
-                              cell.getContext(),
-                            )}
+                          : id.includes("assigned_to")
+                            ? `${name} (${email})`
+                            : flexRender(column.columnDef.cell, getContext())}
                       </TableCell>
                     );
                   })}

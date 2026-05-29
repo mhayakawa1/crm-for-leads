@@ -11,6 +11,7 @@ import { Plus, X } from "lucide-react";
 import { useState } from "react";
 import { useData } from "@/contexts/DataContext";
 import { DefaultButton } from "./DefaultButton";
+import { AssignedDropdown } from "./AssignedDropdown";
 
 export function AddData() {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,6 +19,11 @@ export function AddData() {
   const [nameInput, setNameInput] = useState("");
   const [emailInput, setEmailInput] = useState("");
   const [ageInput, setAgeInput] = useState(18);
+  const [assignedInput, setAssignedInput] = useState({
+    id: "",
+    name: "",
+    email: "",
+  });
   const { updateEndpoint } = useData();
   const inputData = [
     { label: "Name", type: "text", value: nameInput, onChange: setNameInput },
@@ -28,6 +34,12 @@ export function AddData() {
       onChange: setEmailInput,
     },
     { label: "Age", type: "number", value: ageInput, onChange: setAgeInput },
+    {
+      label: "Assigned To",
+      type: "text",
+      value: assignedInput,
+      onChange: setAssignedInput,
+    },
   ];
   const handleSubmit = (event: React.ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -37,7 +49,8 @@ export function AddData() {
       email: emailInput,
       age: ageInput,
       status: "New",
-      assigned_to: "",
+      assigned_to: assignedInput,
+      notes: [],
     };
     setId(crypto.randomUUID());
     updateEndpoint("POST", JSON.stringify(body), "");
@@ -72,12 +85,16 @@ export function AddData() {
             return (
               <div key={label} className="py-2 text-sm flex flex-col gap-2">
                 <Label htmlFor={label}>{label}</Label>
-                <Input
-                  type={type}
-                  value={value}
-                  onChange={(event: any) => onChange(event?.target.value)}
-                  className="border border-gray-300"
-                />
+                {label === "Assigned To" ? (
+                  <AssignedDropdown setAssignedInput={setAssignedInput} />
+                ) : (
+                  <Input
+                    type={type}
+                    value={typeof value === "string" ? value : ""}
+                    onChange={(event: any) => onChange(event?.target.value)}
+                    className="border border-gray-300"
+                  />
+                )}
               </div>
             );
           })}

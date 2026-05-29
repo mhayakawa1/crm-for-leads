@@ -78,7 +78,7 @@ export const searchUsers = async (query) => {
 };
 
 export const getFilteredUsers = async (filters) => {
-  const { name, email, age, assigned_to, status, sortBy, isAscending } =
+  const { name, email, age, status, sortBy, isAscending, assigned_id } =
     filters;
   let query = supabase.from("users").select("*");
 
@@ -98,10 +98,9 @@ export const getFilteredUsers = async (filters) => {
     query = query.ilike("status", `%${status}%`);
   }
 
-  if (assigned_to) {
-    query = query.ilike("assigned_to", `%${assigned_to}%`);
+  if (assigned_id) {
+    query = query.eq("assigned_to->>id", assigned_id);
   }
-
   const { data, error } = await query;
 
   if (error) throw new Error(error.message);
@@ -110,7 +109,6 @@ export const getFilteredUsers = async (filters) => {
 
 export const getSortedUsers = async (filters) => {
   let query = supabase.from("users").select("*");
-
   if (filters.name) {
     query = query.ilike("name", `%${filters.name}%`);
   }
@@ -123,12 +121,8 @@ export const getSortedUsers = async (filters) => {
     query = query.eq("status", filters.status);
   }
 
-  if (filters.assigned_to) {
-    query = query.eq("assigned_to", filters.assigned_to);
-  }
-
   if (filters.created_at) {
-    query = query.eq("assigned_to", filters.created_at);
+    query = query.eq("created_at", filters.created_at);
   }
 
   const { data, error } = await query;

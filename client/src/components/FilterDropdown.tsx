@@ -22,7 +22,6 @@ export function FilterDropdown({ setFilterBy }: DropdownProps) {
     { accessorKey: "name", header: "Name" },
     { accessorKey: "email", header: "Email" },
     { accessorKey: "status", header: "Status" },
-    { accessorKey: "assigned_to", header: "Assigned To" },
   ];
 
   return (
