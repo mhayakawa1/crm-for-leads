@@ -1,0 +1,32 @@
+"use client";
+import DashboardLink from "./DashboardLink";
+import BoardColumn from "./BoardColumn";
+import { useData } from "@/contexts/DataContext";
+
+export default function EditStatusesContent() {
+  const { data } = useData();
+  const statusesInfo = [
+    { title: "New", description: "Placeholder description" },
+    { title: "Contacted", description: "Placeholder description" },
+    { title: "Qualified", description: "Placeholder description" },
+    { title: "Closed", description: "Placeholder description" },
+  ];
+
+  return (
+    <div>
+      <DashboardLink />
+      <div className="flex">
+        {statusesInfo.map((status) => {
+          const { title, description } = status;
+          return (
+            <BoardColumn
+              key={title}
+              title={title}
+              description={description}
+              leads={data.filter((user) => user.status === title)}
+            />
+          );
+        })}      </div>
+    </div>
+  );
+}

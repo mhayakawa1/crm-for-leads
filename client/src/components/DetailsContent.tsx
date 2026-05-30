@@ -13,7 +13,7 @@ import { useData, Request, User } from "@/contexts/DataContext";
 import { url } from "@/contexts/AuthContext";
 import NoteContainer from "./NoteContainer";
 import { DefaultButton } from "./DefaultButton";
-import Link from "next/link";
+import DashboardLink from "./DashboardLink";
 
 export default function DetailsContent() {
   const { updateEndpoint } = useData();
@@ -111,9 +111,7 @@ export default function DetailsContent() {
   return (
     <Card className="border border-gray-300 bg-white shadow-sm w-full m-auto max-w-sm h-fit">
       <CardHeader>
-        <Link href="/dashboard" className="w-fit text-center hover:underline">
-          ← Dashboard
-        </Link>
+        <DashboardLink />
         <CardTitle>{userData.name}</CardTitle>
       </CardHeader>
       <CardContent>

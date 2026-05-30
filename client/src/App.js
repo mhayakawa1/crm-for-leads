@@ -10,6 +10,7 @@ import "./index.css";
 import Signup from "./app/signup/page";
 import Login from "./app/login/page";
 import Dashboard from "./app/dashboard/page";
+import EditStatuses from "./app/edit-statuses/page";
 import Details from "./app/details/[id]/page";
 import Error from "./app/error/page";
 
@@ -19,6 +20,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/dashboard" Component={Dashboard} />
+        <Route path="/edit-statuses" Component={EditStatuses} />
         <Route path="/login" Component={Login} />
         <Route path="/signup" Component={Signup} />
         <Route path="/details/*" Component={Details} />
