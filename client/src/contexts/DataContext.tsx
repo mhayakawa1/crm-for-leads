@@ -129,7 +129,10 @@ export function DataProvider({ children }: { children: ReactNode }) {
       }
       if (requestData) {
         async function getData(): Promise<User[]> {
-          const newUrl = `${url}${endpoint}&assigned_id=${JSON.parse(user || "").sub}`;
+          let newUrl = `${url}${endpoint}`;
+          if (method !== "PUT") {
+            newUrl += `&assigned_id=${JSON.parse(user || "").sub}`;
+          }
           if (method === "POST" || method === "PUT") {
             request.body = body;
           }
@@ -137,7 +140,8 @@ export function DataProvider({ children }: { children: ReactNode }) {
           const index = newData.findIndex((user: User) => user.id === id);
           const response = await fetch(newUrl, request);
           const result = (await response.json()) || {};
-
+          // console.log(response);
+          // console.log(result);
           if (!response.ok) {
             return result;
           } else if (response.ok) {

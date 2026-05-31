@@ -1,10 +1,13 @@
 "use client";
 import DashboardLink from "./DashboardLink";
 import BoardColumn from "./BoardColumn";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 import { useData } from "@/contexts/DataContext";
 
 export default function EditStatusesContent() {
   const { data } = useData();
+
   const statusesInfo = [
     { title: "New", description: "Placeholder description" },
     { title: "Contacted", description: "Placeholder description" },
@@ -13,20 +16,23 @@ export default function EditStatusesContent() {
   ];
 
   return (
-    <div>
-      <DashboardLink />
-      <div className="flex">
-        {statusesInfo.map((status) => {
-          const { title, description } = status;
-          return (
-            <BoardColumn
-              key={title}
-              title={title}
-              description={description}
-              leads={data.filter((user) => user.status === title)}
-            />
-          );
-        })}      </div>
-    </div>
+    <DndProvider backend={HTML5Backend}>
+      <div>
+        <DashboardLink />
+        <div className="flex">
+          {statusesInfo.map((status) => {
+            const { title, description } = status;
+            return (
+              <BoardColumn
+                key={title}
+                title={title}
+                description={description}
+                leads={data.filter((user) => user.status === title)}
+              />
+            );
+          })}
+        </div>
+      </div>
+    </DndProvider>
   );
 }

@@ -6,6 +6,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { useData } from "@/contexts/DataContext";
+import { useState, useEffect, useRef } from "react";
+import DropZone from "./DropZone";
+import DragItem from "./DragItem";
 
 interface ColumnProps {
   title: string;
@@ -18,6 +22,26 @@ export default function BoardColumn({
   description,
   leads,
 }: ColumnProps) {
+  const { updateEndpoint } = useData();
+  const leadsRef = useRef(leads);
+  const [droppedItems, setDroppedItems] = useState<any>([...leads]);
+
+  const handleDrop = (item: any) => {
+    const { lead } = item;
+    const newData = { status: title };
+    updateEndpoint("PUT", JSON.stringify(newData), lead.id);
+  };
+
+  useEffect(() => {
+    if (
+      (leads && !droppedItems.length) ||
+      (leads !== leadsRef.current && droppedItems.length)
+    ) {
+      setDroppedItems(leads);
+      leadsRef.current = leads;
+    }
+  }, [leads, leadsRef, droppedItems]);
+
   return (
     <Card className="border border-gray-300 bg-white shadow-sm w-full m-auto max-w-sm h-fit">
       <CardHeader>
@@ -25,12 +49,12 @@ export default function BoardColumn({
         <CardDescription>{description}</CardDescription>
       </CardHeader>
       <CardContent>
-        <ul>
-          {leads.map((lead: any) => (
-            <li key={lead.id} className='border border-solid'>{lead.name}</li>
-          ))}
+        <DropZone onDrop={handleDrop}>
+          {droppedItems.map((lead: any) => {
+            return <DragItem key={lead.id} lead={lead} />;
+          })}
           {!leads.length ? <li>No leads.</li> : null}
-        </ul>
+        </DropZone>
       </CardContent>
       <CardFooter className="flex-col gap-2"></CardFooter>
     </Card>
