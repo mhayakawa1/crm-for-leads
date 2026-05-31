@@ -18,6 +18,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Activity } from "@/components/Activity";
 import { EditData } from "@/components/EditData";
 import { ConfirmDelete } from "@/components/ConfirmDelete";
 import { FilterDropdown } from "@/components/FilterDropdown";
@@ -114,6 +115,7 @@ export function DataTable<TData, TValue>({
                     className="w-fit flex justify-between gap-[8px]"
                   >
                     <DetailsLink id={row.original.id} />
+                    <Activity data={row.original} />
                     <EditData data={row.original} />
                     <ConfirmDelete data={row.original} />
                   </TableCell>
