@@ -1,5 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
+import { Profile } from "./AuthContext";
 import { url } from "./AuthContext";
 import {
   createContext,
@@ -11,14 +12,15 @@ import {
 
 export interface ContextData {
   data: User[];
-  profiles: any;
+  profiles: User[];
   endpoint: string;
   updateEndpoint: (
     method: string,
     body: string,
     id: string,
-    filter?: any,
+    filter?: string,
   ) => void;
+  createDescription: (user: Profile, data: User, body: Body) => Action;
 }
 
 export interface Update {
@@ -30,6 +32,13 @@ export interface Note {
   key: string;
   note: string;
   updates: Update[];
+}
+
+export interface Action {
+  id: string;
+  time: string;
+  user: Profile;
+  descriptions: (string | undefined)[];
 }
 
 export type AssignedTo = {
@@ -47,14 +56,17 @@ export type User = {
   assigned_to: AssignedTo;
   status: string;
   notes: Note[];
+  activity: Action[];
 };
 
 export interface Body {
   name?: string;
-  email: string;
+  email?: string;
   status?: string;
-  assigned_to?: string;
+  assigned_to?: AssignedTo;
   password?: string;
+  notes?: Note[];
+  activity?: Action[];
 }
 
 export interface Request {
@@ -80,7 +92,7 @@ const DataContext = createContext<ContextData | undefined>(undefined);
 
 export function DataProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
-  const [profiles, setProfiles] = useState<any>([]);
+  const [profiles, setProfiles] = useState<User[]>([]);
   const [data, setData] = useState<User[]>([]);
   const [requestProfiles, setRequestProfiles] = useState(true);
   const [requestData, setRequestData] = useState(true);
@@ -111,7 +123,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
     };
     if (user && token) {
       if (requestProfiles) {
-        async function getProfiles(): Promise<any> {
+        async function getProfiles(): Promise<Profile[]> {
           const newUrl = `${url}profiles`;
           try {
             const response = await fetch(newUrl, request);
@@ -130,7 +142,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
       if (requestData) {
         async function getData(): Promise<User[]> {
           let newUrl = `${url}${endpoint}`;
-          if (method !== "PUT") {
+          if (method !== "PUT" && method !== "POST") {
             newUrl += `&assigned_id=${JSON.parse(user || "").sub}`;
           }
           if (method === "POST" || method === "PUT") {
@@ -140,8 +152,6 @@ export function DataProvider({ children }: { children: ReactNode }) {
           const index = newData.findIndex((user: User) => user.id === id);
           const response = await fetch(newUrl, request);
           const result = (await response.json()) || {};
-          // console.log(response);
-          // console.log(result);
           if (!response.ok) {
             return result;
           } else if (response.ok) {
@@ -210,8 +220,45 @@ export function DataProvider({ children }: { children: ReactNode }) {
     setRequestData(true);
   };
 
+  function createDescription(user: Profile, data: User, body: Body) {
+    const time = new Date().toLocaleString();
+    const descriptions = Object.entries(body)
+      .map((entry) => {
+        const [key, value] = entry;
+        const dataValue = data[key as keyof typeof data];
+        if (dataValue !== value) {
+          if (key === "notes") {
+            for (let i = 0; i < value.length; i++) {
+              const { key, note } = value[i];
+              const preexistingNote = data.notes.find(
+                (note: Note) => note.key === key,
+              );
+              if (!preexistingNote) {
+                return `added note: ${note}`;
+              } else if (preexistingNote.note !== note) {
+                return `edited note: ${note}`;
+              }
+            }
+          } else if (key === "assigned_to") {
+            return `reassigned lead from ${(dataValue as AssignedTo).name} to ${value.name}`;
+          } else {
+            return `changed ${key} from ${dataValue} to ${value}`;
+          }
+        }
+      })
+      .filter((element) => element);
+    return {
+      id: crypto.randomUUID(),
+      time: time,
+      user: user,
+      descriptions: descriptions,
+    };
+  }
+
   return (
-    <DataContext.Provider value={{ data, profiles, endpoint, updateEndpoint }}>
+    <DataContext.Provider
+      value={{ data, profiles, endpoint, updateEndpoint, createDescription }}
+    >
       {children}
     </DataContext.Provider>
   );

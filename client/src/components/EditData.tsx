@@ -9,9 +9,9 @@ import {
 import { Edit } from "lucide-react";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
-import { User } from "@/contexts/DataContext";
+import { User, useData, Body } from "@/contexts/DataContext";
+import { useAuth } from "@/contexts/AuthContext";
 import { StatusDropdown } from "./StatusDropdown";
-import { useData } from "@/contexts/DataContext";
 import { useState } from "react";
 import { DefaultButton } from "./DefaultButton";
 import { useEffect } from "react";
@@ -22,14 +22,15 @@ interface EditProps {
 }
 
 export function EditData({ data }: EditProps) {
-  const { id, name, email, status, assigned_to } = data;
+  const { id, name, email, status, assigned_to, activity } = data;
   const [nameInput, setNameInput] = useState(name || "");
   const [emailInput, setEmailInput] = useState(email || "");
   const [statusInput, setStatusInput] = useState(status || "");
   const [assigned, setAssigned] = useState(
     assigned_to || { id: "", name: "", email: "" },
   );
-  const { updateEndpoint } = useData();
+  const { user } = useAuth();
+  const { updateEndpoint, createDescription } = useData();
   const inputData = [
     { label: "Name", type: "text", value: nameInput, onChange: setNameInput },
     {
@@ -53,12 +54,14 @@ export function EditData({ data }: EditProps) {
   ];
   const handleSubmit = (event: React.ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const body = {
+    const body: Body = {
       name: nameInput,
       email: emailInput,
       status: statusInput,
       assigned_to: assigned,
     };
+    const newActions = createDescription(user, data, body);
+    body.activity = [newActions, ...activity];
     updateEndpoint("PUT", JSON.stringify(body), id);
   };
 
@@ -103,7 +106,11 @@ export function EditData({ data }: EditProps) {
                     <Input
                       type={type}
                       value={typeof value === "string" ? value : ""}
-                      onChange={(event: any) => onChange(event?.target.value)}
+                      onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                        (onChange as (value: string) => void)(
+                          event.target.value,
+                        )
+                      }
                       className="col-span-2 h-8 border border-gray-300"
                     />
                   )}

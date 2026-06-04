@@ -9,14 +9,14 @@ import {
 import { useAuth } from "@/contexts/AuthContext";
 import { Textarea } from "./ui/textarea";
 import { useEffect, useState } from "react";
-import { useData, Request, User } from "@/contexts/DataContext";
+import { useData, Request, User, Body, Note } from "@/contexts/DataContext";
 import { url } from "@/contexts/AuthContext";
 import NoteContainer from "./NoteContainer";
 import { DefaultButton } from "./DefaultButton";
 import DashboardLink from "./DashboardLink";
 
 export default function DetailsContent() {
-  const { updateEndpoint } = useData();
+  const { updateEndpoint, createDescription } = useData();
   const { user } = useAuth();
   const [id, setId] = useState("");
   const [makeRequest, setMakeRequest] = useState(true);
@@ -30,6 +30,7 @@ export default function DetailsContent() {
     assigned_to: { id: "", name: "", email: "" },
     status: "",
     notes: [],
+    activity: [],
   });
 
   useEffect(() => {
@@ -62,7 +63,8 @@ export default function DetailsContent() {
     }
   }, [id, makeRequest, userData]);
 
-  const editNotes = (key: any, newNote: string) => {
+  const editNotes = (key: string, newNote: string) => {
+    const currentData = JSON.parse(JSON.stringify(userData));
     const date = new Date().toLocaleString();
     const updatedBy = user ? user.name : "";
     let newNotes = [...userData.notes];
@@ -89,10 +91,15 @@ export default function DetailsContent() {
     const newData = { ...userData };
     newData.notes = newNotes;
     setUserData(newData);
-    const body = {
+    const body: Body = {
       notes: newNotes,
     };
-    updateEndpoint("PUT", JSON.stringify(body), id);
+
+    if (user) {
+      const newActions = createDescription(user, currentData, body);
+      body.activity = [newActions, ...userData.activity];
+      updateEndpoint("PUT", JSON.stringify(body), id);
+    }
   };
 
   const handleSubmit = (event: React.ChangeEvent<HTMLFormElement>) => {
@@ -143,7 +150,7 @@ export default function DetailsContent() {
             <DefaultButton>+</DefaultButton>
           </form>
           <ul>
-            {userData.notes.map((item: any) => {
+            {userData.notes.map((item: Note) => {
               return (
                 <NoteContainer
                   key={item.key}

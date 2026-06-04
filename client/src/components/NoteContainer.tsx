@@ -5,7 +5,7 @@ import { Note } from "@/contexts/DataContext";
 
 interface NoteProps {
   item: Note;
-  editNotes: any;
+  editNotes: (key: string, newNote: string) => void;
 }
 
 export default function NoteContainer({ item, editNotes }: NoteProps) {
@@ -31,8 +31,10 @@ export default function NoteContainer({ item, editNotes }: NoteProps) {
   return (
     <li className="flex flex-col">
       <ul>
-        <li>Created at: {updates[0].time}</li>
-        <li>Last updated: {updates[updates.length - 1].time}</li>
+        <li>Created at: {updates[0] ? updates[0].time : ""}</li>
+        <li>
+          Last updated: {updates[0] ? updates[updates.length - 1].time : ""}
+        </li>
       </ul>
       <form onSubmit={handleSubmit}>
         <div className="w-full">

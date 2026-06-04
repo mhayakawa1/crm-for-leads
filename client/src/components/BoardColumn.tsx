@@ -6,7 +6,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useData } from "@/contexts/DataContext";
+import { useData, Body, User } from "@/contexts/DataContext";
+import { useAuth } from "@/contexts/AuthContext";
 import { useState, useEffect, useRef } from "react";
 import DropZone from "./DropZone";
 import DragItem from "./DragItem";
@@ -14,7 +15,11 @@ import DragItem from "./DragItem";
 interface ColumnProps {
   title: string;
   description: string;
-  leads: any;
+  leads: User[];
+}
+
+interface DropItem {
+  lead: User;
 }
 
 export default function BoardColumn({
@@ -22,14 +27,17 @@ export default function BoardColumn({
   description,
   leads,
 }: ColumnProps) {
-  const { updateEndpoint } = useData();
+  const { updateEndpoint, createDescription } = useData();
+  const { user } = useAuth();
   const leadsRef = useRef(leads);
-  const [droppedItems, setDroppedItems] = useState<any>([...leads]);
+  const [droppedItems, setDroppedItems] = useState<User[]>([...leads]);
 
-  const handleDrop = (item: any) => {
+  const handleDrop = (item: DropItem) => {
     const { lead } = item;
-    const newData = { status: title };
-    updateEndpoint("PUT", JSON.stringify(newData), lead.id);
+    const body: Body = { status: title };
+    const newActions = createDescription(user, lead, body);
+    body.activity = [newActions];
+    updateEndpoint("PUT", JSON.stringify(body), lead.id);
   };
 
   useEffect(() => {
@@ -50,7 +58,7 @@ export default function BoardColumn({
       </CardHeader>
       <CardContent>
         <DropZone onDrop={handleDrop}>
-          {droppedItems.map((lead: any) => {
+          {droppedItems.map((lead: User) => {
             return <DragItem key={lead.id} lead={lead} />;
           })}
           {!leads.length ? <li>No leads.</li> : null}

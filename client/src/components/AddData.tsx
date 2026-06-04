@@ -51,6 +51,7 @@ export function AddData() {
       status: "New",
       assigned_to: assignedInput,
       notes: [],
+      activity: [],
     };
     setId(crypto.randomUUID());
     updateEndpoint("POST", JSON.stringify(body), "");
@@ -91,7 +92,9 @@ export function AddData() {
                   <Input
                     type={type}
                     value={typeof value === "string" ? value : ""}
-                    onChange={(event: any) => onChange(event?.target.value)}
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                      (onChange as (value: string) => void)(event.target.value)
+                    }
                     className="border border-gray-300"
                   />
                 )}

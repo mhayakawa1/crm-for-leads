@@ -9,14 +9,16 @@ import {
   ReactNode,
 } from "react";
 
+export interface Profile {
+  email: string;
+  email_verified: boolean;
+  name: string;
+  phone_verified: boolean;
+  sub: string;
+}
+
 export interface ContextData {
-  user: {
-    email: string;
-    email_verified: boolean;
-    name: string;
-    phone_verified: boolean;
-    sub: string;
-  } | null;
+  user: Profile;
   submitRequest: (requestType: string, body?: Body | null) => void;
   isSuccessful: boolean;
   errorMessage: string;
@@ -30,13 +32,19 @@ export interface Request {
   body?: string;
 }
 
-export const url = 'http://localhost:5000/api/'
+export const url = "http://localhost:5000/api/";
 
 const AuthContext = createContext<ContextData | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState({
+    email: "",
+    email_verified: true,
+    name: "",
+    phone_verified: true,
+    sub: "",
+  });
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const [body, setBody] = useState("");
   const [endpoint, setEndpoint] = useState("");
@@ -84,7 +92,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setHasSubmitted(false);
     }
     const userItem = localStorage.getItem("user");
-    if (userItem && !user) {
+    if (userItem && !user.sub) {
       setUser(JSON.parse(userItem));
     }
   }, [hasSubmitted, endpoint]);
