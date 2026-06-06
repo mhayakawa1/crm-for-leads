@@ -52,7 +52,7 @@ export type User = {
   name: string;
   email: string;
   age: number;
-  createdAt: string;
+  created_at: string;
   assigned_to: AssignedTo;
   status: string;
   notes: Note[];

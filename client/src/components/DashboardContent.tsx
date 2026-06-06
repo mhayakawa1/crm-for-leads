@@ -17,6 +17,9 @@ export default function DashboardContent() {
       <Link href="/edit-statuses" className="w-fit text-center hover:underline">
         Edit Lead Statuses
       </Link>
+      <Link href="/analytics" className="w-fit text-center hover:underline">
+        Analytics
+      </Link>
       <AddData />
       <DataTable
         columns={columns}
