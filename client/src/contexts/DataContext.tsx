@@ -18,7 +18,7 @@ export interface ContextData {
     method: string,
     body: string,
     id: string,
-    filter?: string,
+    filter?: Filters,
   ) => void;
   createDescription: (user: Profile, data: User, body: Body) => Action;
 }
@@ -79,12 +79,11 @@ export interface Request {
   body?: string;
 }
 
-interface Filters {
-  name: string;
-  email: string;
-  status: string;
-  sortBy: string;
-  isAscending: boolean;
+export interface Filters {
+  name?: string;
+  email?: string;
+  status?: string;
+  isAscending?: boolean;
   [key: string]: string | boolean | undefined;
 }
 
@@ -152,6 +151,8 @@ export function DataProvider({ children }: { children: ReactNode }) {
           const index = newData.findIndex((user: User) => user.id === id);
           const response = await fetch(newUrl, request);
           const result = (await response.json()) || {};
+          console.log(response);
+          console.log(result);
           if (!response.ok) {
             return result;
           } else if (response.ok) {
@@ -191,7 +192,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
     method: string,
     body: string,
     id: string,
-    filter?: string,
+    filter?: Filters,
   ) => {
     setMethod(method);
     setBody(body);

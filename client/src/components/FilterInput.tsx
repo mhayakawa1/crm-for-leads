@@ -6,10 +6,9 @@ import { useData } from "@/contexts/DataContext";
 
 interface InputProps {
   filterBy: string;
-  value: string;
 }
 
-export function FilterInput({ filterBy, value }: InputProps) {
+export function FilterInput({ filterBy }: InputProps) {
   const { updateEndpoint } = useData();
   const [inputValue, setInputValue] = useState("");
 
@@ -18,7 +17,7 @@ export function FilterInput({ filterBy, value }: InputProps) {
       const query = {
         [filterBy]: inputValue,
       };
-      updateEndpoint("GET", "", "", query);
+      updateEndpoint("GET", "", "", (query));
     }
   };
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {

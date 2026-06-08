@@ -26,7 +26,7 @@ export default function DetailsContent() {
     name: "",
     email: "",
     age: 0,
-    createdAt: "",
+    created_at: "",
     assigned_to: { id: "", name: "", email: "" },
     status: "",
     notes: [],

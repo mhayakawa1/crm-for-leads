@@ -12,8 +12,8 @@ import { useReminders } from "@/contexts/RemindersContext";
 import { ReminderBox } from "./ReminderBox";
 
 export function RemindersContent() {
-  const { today, updateReminders, remindersList } = useReminders();
-  const [isOpen, setIsOpen] = useState(true);
+  const { remindersList } = useReminders();
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <Collapsible
