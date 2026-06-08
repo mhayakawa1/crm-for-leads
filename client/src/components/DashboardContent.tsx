@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { columns } from "@/app/dashboard/columns";
 import { DataTable } from "@/app/dashboard/data-table";
 import { AddData } from "@/components/AddData";
+import { RemindersContent } from "./RemindersContent";
 import Link from "next/link";
 
 import { useData } from "@/contexts/DataContext";
@@ -20,6 +21,7 @@ export default function DashboardContent() {
       <Link href="/analytics" className="w-fit text-center hover:underline">
         Analytics
       </Link>
+      <RemindersContent />
       <AddData />
       <DataTable
         columns={columns}

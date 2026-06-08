@@ -14,7 +14,9 @@ import {
   signUp,
   signIn,
   signOut,
-  fetchProfiles
+  fetchProfiles,
+  fetchRemindersById,
+  modifyReminders,
 } from "../controllers/userController.js";
 import jwt from "jsonwebtoken";
 import { protect } from "../middleware/auth.js";
@@ -257,4 +259,7 @@ router.delete("/users/:id", protect, removeUser);
 router.get("/users/email/:email", protect, fetchUserByEmail);
 
 router.get("/profiles", protect, fetchProfiles);
+
+router.get("/reminders/:id", protect, fetchRemindersById);
+router.put("/reminders/:id", protect, modifyReminders);
 export default router;

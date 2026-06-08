@@ -1,17 +1,17 @@
 "use client";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuGroup,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
-  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/contexts/AuthContext";
 import Logout from "./Logout";
-import { Button } from "./ui/button";
+import { MenuTrigger } from "./MenuTrigger";
+import { MenuNotifications } from "./MenuNotifications";
 import { useState, useEffect } from "react";
+
 export default function Menu() {
   const { user } = useAuth();
   const [email, setEmail] = useState("");
@@ -28,14 +28,7 @@ export default function Menu() {
   return (
     <div className="flex justify-end w-full pt-4">
       <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button className="p-0 rounded-full w-fit">
-            <Avatar>
-              <AvatarImage src="" alt="@shadcn" className="grayscale" />
-              <AvatarFallback>CN</AvatarFallback>
-            </Avatar>
-          </Button>
-        </DropdownMenuTrigger>
+        <MenuTrigger />
         <DropdownMenuContent
           className="w-fit text-right bg-white border border-gray-300 p-0"
           align="end"
@@ -47,6 +40,7 @@ export default function Menu() {
             <DropdownMenuItem className="focus:outline-none">
               {email}
             </DropdownMenuItem>
+            <MenuNotifications />
           </DropdownMenuGroup>
           <DropdownMenuSeparator className="bg-gray-300" />
           <DropdownMenuItem className="focus:outline-none">
