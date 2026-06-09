@@ -151,8 +151,6 @@ export function DataProvider({ children }: { children: ReactNode }) {
           const index = newData.findIndex((user: User) => user.id === id);
           const response = await fetch(newUrl, request);
           const result = (await response.json()) || {};
-          console.log(response);
-          console.log(result);
           if (!response.ok) {
             return result;
           } else if (response.ok) {
