@@ -2,12 +2,11 @@
 import { sendEmail } from "@/app/actions";
 import { useState } from "react";
 
-export default function EmailContent() {
+export default function EmailTemplate() {
   const [status, setStatus] = useState<string>("");
 
   async function handleFormSubmit(formData: FormData) {
     setStatus("Sending...");
-    
     const result = await sendEmail(formData);
 
     if (result.success) {
