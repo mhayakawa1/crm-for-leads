@@ -1,24 +1,21 @@
 "use server";
-import { Resend } from "resend";
 
-const resend = new Resend('re_Rb9kagVH_26qh6Ar1e8SFLMrTQfwJQgJG')
+import { dispatchEmail } from "@/lib/mailer";
+
 export async function sendEmail(formData: FormData) {
-  const targetEmail = formData.get("email") as string;
+  const userEmail = formData.get("email") as string;
 
   try {
-    const { data, error } = await resend.emails.send({
-      from: "Acme <onboarding@resend.dev>",
-      to: [targetEmail],
-      subject: "Hello from Next.js!",
-      html: "<p>This email was triggered from localhost using a Server Action.</p>",
+    const result = await dispatchEmail({
+      from: "System Admin <system@my-local-app.localhost>",
+      to: [userEmail],
+      subject: "Welcome to the Platform!",
+      html: "<h1>Account Created Successfully</h1><p>Mailpit intercepted this locally.</p>",
     });
 
-    if (error) {
-      return { success: false, error: error.message };
-    }
-
-    return { success: true, id: data?.id };
-  } catch (err) {
-    return { success: false, error: "Failed to dispatch email" };
+    return { success: true, message: `Dispatched with ID: ${result.id}` };
+  } catch (err: any) {
+    console.log(err.message)
+    return { success: false, error: err.message };
   }
 }
