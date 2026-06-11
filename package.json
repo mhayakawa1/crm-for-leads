@@ -19,6 +19,7 @@
   "author": "Manthan Ankolekar",
   "license": "MIT",
   "dependencies": {
+    "@sendgrid/mail": "^8.1.6",
     "@supabase/ssr": "^0.10.3",
     "@supabase/supabase-js": "^2.49.1",
     "cookie": "^1.1.1",

@@ -21,6 +21,9 @@ export default function DashboardContent() {
       <Link href="/analytics" className="w-fit text-center hover:underline">
         Analytics
       </Link>
+      <Link href="/email" className="w-fit text-center hover:underline">
+        Email
+      </Link>
       <RemindersContent />
       <AddData />
       <DataTable

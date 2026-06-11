@@ -15,6 +15,8 @@ import {
   updateReminders,
 } from "../services/userService.js";
 import supabase from "../config/supabaseClient.js";
+import { NextResponse } from "next/server.js";
+import sgMail from "@sendgrid/mail";
 
 export const addUser = async (req, res) => {
   try {
@@ -189,5 +191,48 @@ export const modifyReminders = async (req, res) => {
     res.status(200).json(updatedReminders);
   } catch (error) {
     res.status(400).json({ error: error.message });
+  }
+};
+
+export const postEmail = async (req, res) => {
+  if (!process.env.SENDGRID_API_KEY) {
+    res.status(400).json({ error: "Missing API key" });
+  } else {
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+  }
+  try {
+    const body = await req.body;
+    const { to, subject, message, from } = body;
+
+    if (!to || !subject || !message) {
+      res
+        .status(400)
+        .json({ error: "Missing required fields: to, subject, or message" });
+    }
+
+    const fromEmail = process.env.SENDGRID_FROM_EMAIL;
+    if (!fromEmail) {
+      res
+        .status(500)
+        .json({ error: "Server misconfiguration: Sender email missing" });
+    }
+    const { name, email } = from;
+    const text = message.replace(/(\r\n|\n|\r)/g, "<br />");
+    const emailMessage = {
+      to,
+      from: fromEmail.toString(),
+      subject: subject,
+      text: text,
+      html: `<p><span>From: ${name} (${email})</span><br />${text}</p>`,
+    };
+    await sgMail.send(emailMessage);
+    res.status(200).json({ message: "Email sent successfully" });
+  } catch (error) {
+    console.error(
+      "SendGrid Route Handler Error:",
+      error.response?.body || error.message,
+    );
+
+    res.status(400).json({ error: error });
   }
 };

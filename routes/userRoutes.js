@@ -17,6 +17,7 @@ import {
   fetchProfiles,
   fetchRemindersById,
   modifyReminders,
+  postEmail,
 } from "../controllers/userController.js";
 import jwt from "jsonwebtoken";
 import { protect } from "../middleware/auth.js";
@@ -262,4 +263,6 @@ router.get("/profiles", protect, fetchProfiles);
 
 router.get("/reminders/:id", protect, fetchRemindersById);
 router.put("/reminders/:id", protect, modifyReminders);
+
+router.post("/send", postEmail);
 export default router;

@@ -13,6 +13,7 @@ import Dashboard from "./app/dashboard/page";
 import EditStatuses from "./app/edit-statuses/page";
 import Details from "./app/details/[id]/page";
 import Analytics from "./app/analytics/page";
+import Email from "./app/email/page";
 import Error from "./app/error/page";
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
         <Route path="/signup" Component={Signup} />
         <Route path="/details/*" Component={Details} />
         <Route path="/analytics" Component={Analytics} />
+        <Route path="/Email" Component={Email} />
         <Route path="*" Component={Error} />
       </Routes>
     </BrowserRouter>
