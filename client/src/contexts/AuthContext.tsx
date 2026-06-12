@@ -9,12 +9,23 @@ import {
   ReactNode,
 } from "react";
 
+export interface Email {
+  to: string;
+  from: string;
+  html: string;
+  text: string;
+  subject: string;
+  isMultiple: boolean;
+  substitutionWrappers: string[];
+}
+
 export interface Profile {
   email: string;
   email_verified: boolean;
   name: string;
   phone_verified: boolean;
   sub: string;
+  email_history: Email[];
 }
 
 export interface ContextData {
@@ -44,6 +55,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     name: "",
     phone_verified: true,
     sub: "",
+    email_history: [],
   });
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const [body, setBody] = useState("");

@@ -152,6 +152,17 @@ export const getProfiles = async () => {
   return data;
 };
 
+export const updateProfile = async (id, updates) => {
+  const { data, error } = await supabase
+    .from("profiles")
+    .update(updates)
+    .eq("id", id)
+    .select();
+
+  if (error) throw new Error(error.message);
+  return data;
+};
+
 export const getRemindersById = async (id) => {
   const { data, error } = await supabase
     .from("reminders")
@@ -169,7 +180,7 @@ export const updateReminders = async (id, updates) => {
     .update(updates)
     .eq("id", id)
     .select();
-    
+
   if (error) throw new Error(error.message);
   return data;
 };

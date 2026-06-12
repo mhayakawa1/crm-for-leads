@@ -12,7 +12,7 @@ import {
 
 export interface ContextData {
   data: User[];
-  profiles: User[];
+  profiles: Profile[];
   endpoint: string;
   updateEndpoint: (
     method: string,
@@ -91,7 +91,7 @@ const DataContext = createContext<ContextData | undefined>(undefined);
 
 export function DataProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
-  const [profiles, setProfiles] = useState<User[]>([]);
+  const [profiles, setProfiles] = useState<Profile[]>([]);
   const [data, setData] = useState<User[]>([]);
   const [requestProfiles, setRequestProfiles] = useState(true);
   const [requestData, setRequestData] = useState(true);

@@ -13,6 +13,7 @@ import {
   getProfiles,
   getRemindersById,
   updateReminders,
+  updateProfile,
 } from "../services/userService.js";
 import supabase from "../config/supabaseClient.js";
 import { NextResponse } from "next/server.js";
@@ -202,7 +203,7 @@ export const postEmail = async (req, res) => {
   }
   try {
     const body = await req.body;
-    const { to, subject, message, from } = body;
+    const { to, subject, message, from } = body?.email;
 
     if (!to || !subject || !message) {
       res
@@ -216,7 +217,7 @@ export const postEmail = async (req, res) => {
         .status(500)
         .json({ error: "Server misconfiguration: Sender email missing" });
     }
-    const { name, email } = from;
+    const { sub, name, email } = from;
     const text = message.replace(/(\r\n|\n|\r)/g, "<br />");
     const emailMessage = {
       to,
@@ -225,14 +226,17 @@ export const postEmail = async (req, res) => {
       text: text,
       html: `<p><span>From: ${name} (${email})</span><br />${text}</p>`,
     };
+
     await sgMail.send(emailMessage);
+    const newHistory = [emailMessage,...body.email_history];
+    const updatedEmails = await updateProfile(sub, {
+      email_history: newHistory,
+    });
+    if (!updatedEmails || updatedEmails.length === 0) {
+      return res.status(404).json({ error: "User not found" });
+    }
     res.status(200).json({ message: "Email sent successfully" });
   } catch (error) {
-    console.error(
-      "SendGrid Route Handler Error:",
-      error.response?.body || error.message,
-    );
-
     res.status(400).json({ error: error });
   }
 };
