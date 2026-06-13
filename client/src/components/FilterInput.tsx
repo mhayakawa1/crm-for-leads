@@ -6,6 +6,7 @@ import { useData } from "@/contexts/DataContext";
 
 interface InputProps {
   filterBy: string;
+  value: unknown; 
 }
 
 export function FilterInput({ filterBy }: InputProps) {

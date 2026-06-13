@@ -14,6 +14,7 @@ import { url } from "@/contexts/AuthContext";
 import NoteContainer from "./NoteContainer";
 import { DefaultButton } from "./DefaultButton";
 import DashboardLink from "./DashboardLink";
+import { ActivityTimeline } from "./ActivityTimeline";
 
 export default function DetailsContent() {
   const { updateEndpoint, createDescription } = useData();
@@ -114,55 +115,59 @@ export default function DetailsContent() {
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setNoteInput(event.target.value);
   };
-
+console.log(id)
   return (
-    <Card className="border border-gray-300 bg-white shadow-sm w-full m-auto max-w-sm h-fit">
-      <CardHeader>
-        <DashboardLink />
-        <CardTitle>{userData.name}</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <ul>
-          {Object.entries(userData)
-            .slice(2, 6)
-            .map((entry) => {
-              const [key, value] = entry;
-              return (
-                <li key={key}>
-                  {key.charAt(0).toUpperCase() + key.slice(1).replace("_", " ")}
-                  :
-                  {key === "assigned_to"
-                    ? `${userData.assigned_to.name} (${userData.assigned_to.email})`
-                    : value?.toString()}
-                </li>
-              );
-            })}
-        </ul>
-        <div>
-          <h2>Notes</h2>
-          <form onSubmit={handleSubmit}>
-            <h3>Add Note</h3>
-            <Textarea
-              onChange={handleChange}
-              value={noteInput}
-              placeholder="Enter text..."
-            />
-            <DefaultButton>+</DefaultButton>
-          </form>
+    <div>
+      <Card className="border border-gray-300 bg-white shadow-sm w-full m-auto max-w-sm h-fit">
+        <CardHeader>
+          <DashboardLink />
+          <CardTitle>{userData.name}</CardTitle>
+        </CardHeader>
+        <CardContent>
           <ul>
-            {userData.notes.map((item: Note) => {
-              return (
-                <NoteContainer
-                  key={item.key}
-                  item={item}
-                  editNotes={editNotes}
-                />
-              );
-            })}
+            {Object.entries(userData)
+              .slice(2, 6)
+              .map((entry) => {
+                const [key, value] = entry;
+                return (
+                  <li key={key}>
+                    {key.charAt(0).toUpperCase() +
+                      key.slice(1).replace("_", " ")}
+                    :
+                    {key === "assigned_to"
+                      ? `${userData.assigned_to.name} (${userData.assigned_to.email})`
+                      : value?.toString()}
+                  </li>
+                );
+              })}
           </ul>
-        </div>
-      </CardContent>
-      <CardFooter className="flex-col gap-2"></CardFooter>
-    </Card>
+          <div>
+            <h2>Notes</h2>
+            <form onSubmit={handleSubmit}>
+              <h3>Add Note</h3>
+              <Textarea
+                onChange={handleChange}
+                value={noteInput}
+                placeholder="Enter text..."
+              />
+              <DefaultButton>+</DefaultButton>
+            </form>
+            <ul>
+              {userData.notes.map((item: Note) => {
+                return (
+                  <NoteContainer
+                    key={item.key}
+                    item={item}
+                    editNotes={editNotes}
+                  />
+                );
+              })}
+            </ul>
+          </div>
+        </CardContent>
+        <CardFooter className="flex-col gap-2"></CardFooter>
+      </Card>
+      <ActivityTimeline activity={userData.activity}/>
+    </div>
   );
 }
