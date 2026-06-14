@@ -9,7 +9,7 @@ export default function LoggedInContent({
 }) {
   return (
     <RemindersProvider>
-      <div className="relative h-full w-full max-w-screen-md flex flex-col gap-2 container px-4 box-border">
+      <div id="main-content" className="relative h-full w-full max-w-screen-md flex flex-col gap-2 container px-4 box-border">
         <Menu />
         <ChatPopover />
         {children}

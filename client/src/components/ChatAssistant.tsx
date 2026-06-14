@@ -21,13 +21,22 @@ export default function ChatAssistant() {
   const handleSubmit = async (event: React.ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!input.trim()) return;
-    sendMessage({ text: input });
+    const pageContent =
+      document.getElementById("main-content")?.innerText || "";
+
+    sendMessage({
+      text: input,
+      metadata: {
+      currentUrl: window.location.href,
+      pageContextText: pageContent 
+    }
+    });
     setInput("");
   };
 
   return (
     <div className="border border-solid bg-white flex flex-col w-full max-w-md py-0 mx-auto stretch gap-4">
-     {error && (
+      {error && (
         <div className="text-xs p-2 bg-red-50 border border-red-200 text-red-600 rounded">
           {errorMessage}
         </div>
@@ -45,7 +54,7 @@ export default function ChatAssistant() {
               if (part.type === "text") {
                 return <span key={index}>{part.text}</span>;
               }
-            
+
               return null;
             })}
           </div>

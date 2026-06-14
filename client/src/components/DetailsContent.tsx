@@ -115,7 +115,7 @@ export default function DetailsContent() {
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setNoteInput(event.target.value);
   };
-console.log(id)
+
   return (
     <div>
       <Card className="border border-gray-300 bg-white shadow-sm w-full m-auto max-w-sm h-fit">

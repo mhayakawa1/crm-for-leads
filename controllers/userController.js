@@ -255,24 +255,37 @@ export const dynamic = "force-dynamic";
 export async function POST(req, res) {
   try {
     const { messages } = req.body;
+    let pageContextText = "";
+    let currentUrl = "";
+    if (messages && messages.length > 0) {
+      const lastMessage = messages[messages.length - 1];
+      if (lastMessage.metadata) {
+        pageContextText = lastMessage.metadata.pageContextText || "";
+        currentUrl = lastMessage.metadata.currentUrl || "";
+      }
+    }
+
     const modelMessages = await convertToModelMessages(messages);
+    let systemInstruction =
+      "You are a helpful UI assistant tool integrated into a web application.";
+
+    if (pageContextText) {
+      systemInstruction += `\n\nYou are currently helping the user view the page: ${currentUrl}. 
+Use the following raw text content extracted from their screen to answer questions accurately:
+---
+${pageContextText}
+---`;
+    }
+
     const result = streamText({
       model: google("gemini-2.5-flash"),
       messages: modelMessages,
+      system: systemInstruction,
     });
 
     const uiStream = result.toUIMessageStream();
-
-    await pipeUIMessageStreamToResponse({
-      response: res,
-      stream: uiStream,
-    });
+    await pipeUIMessageStreamToResponse({ response: res, stream: uiStream });
   } catch (error) {
-    if (!res.headersSent) {
-      return res.status(500).json({
-        error: "Internal processing crash",
-        details: error.message,
-      });
-    }
+    if (!res.headersSent) res.status(500).json({ error: error.message });
   }
 }
