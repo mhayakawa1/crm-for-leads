@@ -14,7 +14,8 @@ export default function DashboardContent() {
   useEffect(() => {}, [filterBy, setFilterBy]);
 
   return (
-    <div className="flex flex-col gap-2 container mx-auto py-10 px-4 box-border">
+    <div className="relative flex flex-col gap-2 container mx-auto py-10 px-4 box-border">
+      {/* <ChatPopover/> */}
       <Link href="/edit-statuses" className="w-fit text-center hover:underline">
         Edit Lead Statuses
       </Link>

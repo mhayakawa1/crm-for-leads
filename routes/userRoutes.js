@@ -18,7 +18,9 @@ import {
   fetchRemindersById,
   modifyReminders,
   postEmail,
+  POST,
 } from "../controllers/userController.js";
+// import { POST } from "./../app/api/chat/route.js";
 import jwt from "jsonwebtoken";
 import { protect } from "../middleware/auth.js";
 
@@ -265,4 +267,6 @@ router.get("/reminders/:id", protect, fetchRemindersById);
 router.put("/reminders/:id", protect, modifyReminders);
 
 router.post("/send", postEmail);
+
+router.post("/chat", POST);
 export default router;

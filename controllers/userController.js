@@ -18,6 +18,13 @@ import {
 import supabase from "../config/supabaseClient.js";
 import { NextResponse } from "next/server.js";
 import sgMail from "@sendgrid/mail";
+import { google } from "@ai-sdk/google";
+import {
+  streamText,
+  pipeUIMessageStreamToResponse,
+  convertToModelMessages,
+} from "ai";
+import { z } from "zod";
 
 export const addUser = async (req, res) => {
   try {
@@ -228,7 +235,7 @@ export const postEmail = async (req, res) => {
     };
 
     await sgMail.send(emailMessage);
-    const newHistory = [emailMessage,...body.email_history];
+    const newHistory = [emailMessage, ...body.email_history];
     const updatedEmails = await updateProfile(sub, {
       email_history: newHistory,
     });
@@ -240,3 +247,32 @@ export const postEmail = async (req, res) => {
     res.status(400).json({ error: error });
   }
 };
+
+export const runtime = "edge";
+
+export const dynamic = "force-dynamic";
+
+export async function POST(req, res) {
+  try {
+    const { messages } = req.body;
+    const modelMessages = await convertToModelMessages(messages);
+    const result = streamText({
+      model: google("gemini-2.5-flash"),
+      messages: modelMessages,
+    });
+
+    const uiStream = result.toUIMessageStream();
+
+    await pipeUIMessageStreamToResponse({
+      response: res,
+      stream: uiStream,
+    });
+  } catch (error) {
+    if (!res.headersSent) {
+      return res.status(500).json({
+        error: "Internal processing crash",
+        details: error.message,
+      });
+    }
+  }
+}
