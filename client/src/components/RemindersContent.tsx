@@ -32,7 +32,7 @@ export function RemindersContent() {
       </div>
       <CollapsibleContent className="flex flex-col items-center w-full">
         <AddReminder />
-        <div className="w-full flex flex-col items-center">
+        <div className="w-full flex flex-col gap-2 items-center pb-4">
           {remindersList.map((reminder) => (
             <ReminderBox key={reminder.id} reminder={reminder} />
           ))}

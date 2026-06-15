@@ -1,10 +1,6 @@
 "use client";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Check, Trash } from "lucide-react";
 import { DefaultButton } from "./DefaultButton";
 import { Reminder, useReminders } from "@/contexts/RemindersContext";
 
@@ -42,20 +38,23 @@ export function ReminderBox({ reminder }: ReminderProps) {
 
   return (
     <Card
-      className={`w-full max-w-sm border border-solid ${overdue ? "border-red-500" : ""}`}
+      className={`w-full max-w-sm border ${overdue ? "border-red-500 bg-red-100" : "border-gray-300"}`}
     >
       <CardHeader>
         <CardTitle>{text}</CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="flex flex-col gap-2">
         <ul>
           <li>{time}</li>
           {overdue ? <li className="text-red-500">Overdue</li> : ""}
-          <li>Complete: {String(completed)}</li>
         </ul>
-        <form onSubmit={handleSubmit}>
-          <DefaultButton id="complete">Complete</DefaultButton>
-          <DefaultButton id="delete">Delete</DefaultButton>
+        <form onSubmit={handleSubmit} className="flex justify-between">
+          <DefaultButton id="delete" className="w-8">
+            <Trash />
+          </DefaultButton>
+          <DefaultButton id="complete" className="w-8">
+            {completed ? <Check /> : null}
+          </DefaultButton>
         </form>
       </CardContent>
     </Card>
