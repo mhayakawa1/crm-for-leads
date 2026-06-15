@@ -1,11 +1,8 @@
 "use client";
-import { Input } from "./ui/input";
 import { useState } from "react";
 import { DefaultButton } from "./DefaultButton";
-import { Textarea } from "./ui/textarea";
 import { useReminders } from "@/contexts/RemindersContext";
 import { ReminderInput } from "./ReminderInput";
-import { Label } from "./ui/label";
 
 export function AddReminder() {
   const { options, today, updateReminders, remindersList } = useReminders();

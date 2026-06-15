@@ -2,10 +2,11 @@
 import {
   Card,
   CardContent,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Label } from "./ui/label";
+import { Plus } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Textarea } from "./ui/textarea";
 import { useEffect, useState } from "react";
@@ -22,6 +23,7 @@ export default function DetailsContent() {
   const [id, setId] = useState("");
   const [makeRequest, setMakeRequest] = useState(true);
   const [noteInput, setNoteInput] = useState("");
+  const [formattedDate, setFormattedDate] = useState("M/D/YYYY, 00:00AM");
   const [userData, setUserData] = useState<User>({
     id: "",
     name: "",
@@ -56,6 +58,9 @@ export default function DetailsContent() {
           return result;
         } else if (response.ok) {
           setUserData(result);
+          const { created_at } = result;
+          const date = new Date(created_at).toLocaleString("en-US");
+          setFormattedDate(date.toString());
         }
         return result;
       }
@@ -117,13 +122,13 @@ export default function DetailsContent() {
   };
 
   return (
-    <div>
+    <div className="flex flex-col gap-12 pb-[10vh]">
       <Card className="border border-gray-300 bg-white shadow-sm w-full m-auto max-w-sm h-fit">
         <CardHeader>
           <DashboardLink />
           <CardTitle>{userData.name}</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="flex flex-col gap-8">
           <ul>
             {Object.entries(userData)
               .slice(2, 6)
@@ -131,28 +136,40 @@ export default function DetailsContent() {
                 const [key, value] = entry;
                 return (
                   <li key={key}>
-                    {key.charAt(0).toUpperCase() +
-                      key.slice(1).replace("_", " ")}
-                    :
-                    {key === "assigned_to"
-                      ? `${userData.assigned_to.name} (${userData.assigned_to.email})`
-                      : value?.toString()}
+                    <span className="font-semibold">
+                      {key.charAt(0).toUpperCase() +
+                        key.slice(1).replace("_", " ")}
+                    </span>
+                    :{" "}
+                    <span>
+                      {key === "assigned_to"
+                        ? `${userData.assigned_to.name} (${userData.assigned_to.email})`
+                        : key === "created_at"
+                          ? formattedDate
+                          : value?.toString()}
+                    </span>
                   </li>
                 );
               })}
           </ul>
-          <div>
-            <h2>Notes</h2>
-            <form onSubmit={handleSubmit}>
-              <h3>Add Note</h3>
+          <div className="flex flex-col gap-4">
+            <form onSubmit={handleSubmit} className="flex flex-col gap-2">
+              <Label htmlFor="textarea">Add Note</Label>
               <Textarea
+                id="textarea"
                 onChange={handleChange}
                 value={noteInput}
                 placeholder="Enter text..."
+                className="h-20"
               />
-              <DefaultButton>+</DefaultButton>
+              <DefaultButton>
+                <Plus />
+              </DefaultButton>
             </form>
-            <ul>
+            <ul className="flex flex-col gap-2">
+              <li>
+                <h2 className="font-semibold">Notes</h2>
+              </li>
               {userData.notes.map((item: Note) => {
                 return (
                   <NoteContainer
@@ -165,9 +182,8 @@ export default function DetailsContent() {
             </ul>
           </div>
         </CardContent>
-        <CardFooter className="flex-col gap-2"></CardFooter>
       </Card>
-      <ActivityTimeline activity={userData.activity}/>
+      <ActivityTimeline activity={userData.activity} />
     </div>
   );
 }

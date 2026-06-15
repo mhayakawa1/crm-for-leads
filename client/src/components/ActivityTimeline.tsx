@@ -19,7 +19,7 @@ export function ActivityTimeline({ activity }: ActivityProps) {
     <Collapsible
       open={isOpen}
       onOpenChange={setIsOpen}
-      className="flex w-full flex-col gap-2 bg-white rounded-md border border-gray-300 drop-shadow-sm"
+      className="flex mx-12 flex-col gap-2 bg-white rounded-md border border-gray-300 drop-shadow-sm"
     >
       <div className="flex items-center justify-between gap-4 px-4 py-2">
         <h4 className="text-sm font-semibold">Activity Timeline</h4>
@@ -30,12 +30,12 @@ export function ActivityTimeline({ activity }: ActivityProps) {
           </Button>
         </CollapsibleTrigger>
       </div>
-      <CollapsibleContent className="flex flex-col items-center w-full">
-        <ul className=" flex flex-col gap-2 max-h-[40vh] overflow-scroll">
+      <CollapsibleContent className="flex flex-col gap-8 items-center">
+        <ul className="flex flex-col gap-4 max-h-[40vh] overflow-y-scroll pb-8 pr-4 text-sm">
           {activity.map((action: Action) => {
             return (
               <li key={action.id} className="flex flex-col">
-                <span>{action.time}</span>
+                <span className="font-semibold">{action.time}</span>
                 <span>
                   {`${action.user.name} (${action.user.email}) ${action.descriptions[0]}`}
                 </span>
