@@ -46,18 +46,13 @@ export function RemindersProvider({ children }: { children: ReactNode }) {
   const [activeReminders, setActiveReminders] = useState<number>(0);
 
   const checkTimeDifference = (reminderTime: string, currentTime: string) => {
-    const reminderDate = new Date(reminderTime.replace(",", ""));
-    const currentDate = new Date(currentTime.replace(",", ""));
+    const date1: any = new Date(reminderTime.replace(",", ""));
+    const date2: any = new Date(currentTime.replace(",", ""));
 
-    reminderDate.setHours(0, 0, 0, 0);
-    currentDate.setHours(0, 0, 0, 0);
+    const minutesDifference = date2 - date1;
+    const hoursDifference = Math.floor(minutesDifference / (1000 * 60 * 60));
 
-    const minutesDifference = Math.abs(
-      currentDate.getTime() - reminderDate.getTime(),
-    );
-    const dayDifference = 24 * 60 * 60 * 1000;
-
-    return minutesDifference >= dayDifference;
+    return hoursDifference >= 24;
   };
 
   const findOverdueReminders = (reminders: Reminder[]) => {
