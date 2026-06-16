@@ -1,12 +1,10 @@
 interface ContainerProps {
   children?: React.ReactNode;
-  title: string;
 }
 
-export function AnalyticsContainer({ children, title }: ContainerProps) {
+export function AnalyticsContainer({ children }: ContainerProps) {
   return (
-    <div className="border border-solid">
-      <h2>{title}</h2>
+    <div className="border border-gray-300 rounded-lg">
       <div>{children}</div>
     </div>
   );

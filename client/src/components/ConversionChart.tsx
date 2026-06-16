@@ -83,7 +83,7 @@ export function ConversionChart({ leads, conversion }: ChartProps) {
   return (
     <Card className="flex flex-col">
       <CardHeader className="items-center pb-0">
-        <CardTitle>{conversion}</CardTitle>
+        <CardTitle className='text-sm'>{conversion}</CardTitle>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer

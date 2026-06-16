@@ -124,8 +124,11 @@ export function LeadsAddedChart({ leads }: ChartProps) {
           </LineChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="flex-col items-start gap-2 text-sm">
-        <form onSubmit={toggleXAxis}>
+      <CardFooter className="flex flex-col text-sm border-gray-300 p-4 pb-0">
+        <form
+          onSubmit={toggleXAxis}
+          className="flex justify-end gap-2 w-full h-full"
+        >
           <DefaultButton
             id="week"
             className={`${isMonth ? "" : "pointer-events-none border-[2px]"}`}

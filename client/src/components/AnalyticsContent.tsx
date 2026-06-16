@@ -1,11 +1,6 @@
 "use client";
 import DashboardLink from "./DashboardLink";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { User } from "@/contexts/DataContext";
 import { AnalyticsContainer } from "./AnalyticsContainer";
 import { useState, useEffect } from "react";
@@ -62,18 +57,25 @@ export default function AnalyticsContent() {
         </CardHeader>
         <CardContent className="flex flex-col gap-4">
           {errorMessage.length ? <p>{errorMessage}</p> : null}
-          <AnalyticsContainer title="Total leads count">
-            <p>{leads.length}</p>
+          <AnalyticsContainer>
+            <div className="py-2 px-4">
+              <h2 className="font-semibold text-base">
+                Total Leads: {leads.length}
+              </h2>
+            </div>
           </AnalyticsContainer>
-          <AnalyticsContainer title="">
+          <AnalyticsContainer>
             <StatusChart leads={leads} />
           </AnalyticsContainer>
-          <AnalyticsContainer title="Conversion rate">
+          <AnalyticsContainer>
+            <div className="pt-2 px-4">
+              <h2 className="font-semibold text-base">Conversion Rates</h2>
+            </div>
             {conversions.map((item) => (
               <ConversionChart key={item} leads={leads} conversion={item} />
             ))}
           </AnalyticsContainer>
-          <AnalyticsContainer title="">
+          <AnalyticsContainer>
             <LeadsAddedChart leads={leads} />
           </AnalyticsContainer>
         </CardContent>
