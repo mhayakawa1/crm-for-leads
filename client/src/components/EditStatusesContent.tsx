@@ -17,9 +17,9 @@ export default function EditStatusesContent() {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div>
+      <div className="">
         <DashboardLink />
-        <div className="flex">
+        <div className="flex gap-2 items-start py-10">
           {statusesInfo.map((status) => {
             const { title, description } = status;
             return (

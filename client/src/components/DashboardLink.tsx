@@ -6,9 +6,9 @@ export default function DashboardLink() {
   return (
     <Link
       href="/dashboard"
-      className="flex gap-2 w-fit text-center hover:underline"
+      className="flex items-center gap-2 w-fit text-center hover:underline"
     >
-      <ArrowLeft /> <span>Dashboard</span>
+      <ArrowLeft size={14} /> <span>Dashboard</span>
     </Link>
   );
 }

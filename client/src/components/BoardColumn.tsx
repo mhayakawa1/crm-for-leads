@@ -51,7 +51,7 @@ export default function BoardColumn({
   }, [leads, leadsRef, droppedItems]);
 
   return (
-    <Card className="border border-gray-300 bg-white shadow-sm w-full m-auto max-w-sm h-fit">
+    <Card className="border border-gray-300 bg-white shadow-sm w-full m-0 max-w-sm h-fit">
       <CardHeader>
         <CardTitle>{title}</CardTitle>
         <CardDescription>{description}</CardDescription>
@@ -64,7 +64,6 @@ export default function BoardColumn({
           {!leads.length ? <li>No leads.</li> : null}
         </DropZone>
       </CardContent>
-      <CardFooter className="flex-col gap-2"></CardFooter>
     </Card>
   );
 }
