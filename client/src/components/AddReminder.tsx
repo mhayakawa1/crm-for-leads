@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { DefaultButton } from "./DefaultButton";
 import { useReminders } from "@/contexts/RemindersContext";
-import { ReminderInput } from "./ReminderInput";
+import { InputContainer } from "./InputContainer";
 
 export function AddReminder() {
   const { options, today, updateReminders, remindersList } = useReminders();
@@ -66,7 +66,7 @@ export function AddReminder() {
       <h3>Add Reminder</h3>
       {inputData.map((data) => {
         const { label, type, min } = data;
-        return <ReminderInput key={type} label={label} type={type} min={min} />;
+        return <InputContainer key={type} label={label} type={type} min={min} onChange={handleChange} />;
       })}
       <DefaultButton className="mt-2 w-full">Submit</DefaultButton>
     </form>

@@ -21,6 +21,8 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { DefaultButton } from "./DefaultButton";
+import { Label } from "./ui/label";
+import { InputContainer } from "./InputContainer";
 
 interface Template {
   type: string;
@@ -32,6 +34,7 @@ export default function EmailsContent() {
   const [status, setStatus] = useState<string>("");
   const { user } = useAuth();
   const { profiles } = useData();
+  const [emailAddress, setEmailAddress] = useState("");
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
   const templates = [
@@ -58,10 +61,9 @@ export default function EmailsContent() {
   async function handleSubmit(event: React.ChangeEvent<HTMLFormElement>) {
     event.preventDefault();
     setStatus("Sending...");
-    const formData = new FormData(event.currentTarget);
     const profile = profiles.find((item) => item.sub === user.sub);
     const email = {
-      to: formData.get("email") as string,
+      to: emailAddress,
       from: user,
       subject: subject,
       message: message,
@@ -88,8 +90,14 @@ export default function EmailsContent() {
   }
 
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const { value } = event.target;
-    setMessage(value);
+    const { id, value } = event.target;
+    if (id === "email") {
+      setEmailAddress(value);
+    } else if (id === "subject") {
+      setSubject(value);
+    } else if (id === "message") {
+      setMessage(value);
+    }
   };
 
   const useTemplate = (template: Template) => {
@@ -102,68 +110,64 @@ export default function EmailsContent() {
     <Card className="border border-gray-300 bg-white shadow-sm w-full m-auto max-w-sm h-fit">
       <CardHeader>
         <DashboardLink />
-        <CardTitle>Emails</CardTitle>
+        <CardTitle>Send an Email</CardTitle>
       </CardHeader>
-      <CardContent>
-        <form
-          onSubmit={handleSubmit}
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "1rem",
-            maxWidth: "300px",
-          }}
-        >
-          <Input
+      <CardContent className="w-full">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-1 w-full">
+          <InputContainer
             type="email"
-            name="email"
+            label="Email"
             placeholder="Recipient Email"
-            required
+            onChange={handleChange}
+            value={emailAddress}
           />
-          <DropdownMenu modal={false}>
-            <DropdownMenuTrigger asChild>
-              <Button>
-                Email Templates
-                <ChevronDown />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="bg-white border border-gray-300 shadow-sm">
-              <form onSubmit={(event) => event.preventDefault()}>
-                {templates.map((template) => (
-                  <DropdownMenuItem
-                    key={template.subject}
-                    onClick={() => useTemplate(template)}
-                    className="hover:bg-gray-300"
-                  >
-                    {template.type}
-                  </DropdownMenuItem>
-                ))}
-              </form>
-            </DropdownMenuContent>
-          </DropdownMenu>
-          <Input
+          <div className="py-2 text-sm flex flex-col gap-2">
+            <Label htmlFor="templates">Email Templates</Label>
+            <DropdownMenu modal={false}>
+              <DropdownMenuTrigger asChild className="border border-gray-300">
+                <Button className="flex justify-between">
+                  Choose a Template (Optional)
+                  <ChevronDown />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="bg-white border border-gray-300 shadow-sm w-[--radix-dropdown-menu-trigger-width]">
+                <form
+                  onSubmit={(event) => event.preventDefault()}
+                  id="templates"
+                >
+                  {templates.map((template) => (
+                    <DropdownMenuItem
+                      key={template.subject}
+                      onClick={() => useTemplate(template)}
+                      className="hover:bg-gray-200"
+                    >
+                      {template.type}
+                    </DropdownMenuItem>
+                  ))}
+                </form>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+          <InputContainer
             type="text"
-            name="subject"
+            label="Subject"
             placeholder="Your Subject"
+            onChange={handleChange}
             value={subject}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-              setSubject(event.target?.value)
-            }
-            required
           />
-          <Textarea
-            name="message"
+          <InputContainer
+            type="textarea"
+            label="Message"
             placeholder="Your Message"
-            className="whitespace-pre-wrap"
             onChange={handleChange}
             value={message}
-            required
           />
           <DefaultButton>Send Email</DefaultButton>
-          {status && <p>{status}</p>}
         </form>
       </CardContent>
-      <CardFooter className="flex-col gap-2"></CardFooter>
+      <CardFooter className="flex-col gap-2">
+        {status && <p>{status}</p>}
+      </CardFooter>
     </Card>
   );
 }
