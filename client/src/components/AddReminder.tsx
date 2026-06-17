@@ -64,7 +64,7 @@ export function AddReminder() {
       <InputContainer
         label="Reminder"
         type="textarea"
-        placeholder='New reminder'
+        placeholder="New reminder"
         value={text}
         onChange={handleChange}
       />
