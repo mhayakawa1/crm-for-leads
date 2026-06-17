@@ -87,7 +87,11 @@ export default function EmailsContent() {
     }
   }
 
-  const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleChange = (
+    event:
+      | React.ChangeEvent<HTMLTextAreaElement>
+      | React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const { id, value } = event.target;
     if (id === "email") {
       setEmailAddress(value);

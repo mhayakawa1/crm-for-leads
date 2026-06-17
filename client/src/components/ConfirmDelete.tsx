@@ -6,13 +6,12 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Trash } from "lucide-react";
-import { Button } from "./ui/button";
-import { useData } from "@/contexts/DataContext";
+import { useData, User } from "@/contexts/DataContext";
 import { useState } from "react";
 import { DefaultButton } from "./DefaultButton";
 
 interface DeleteProps {
-  data: any;
+  data: User;
 }
 
 export function ConfirmDelete({ data }: DeleteProps) {

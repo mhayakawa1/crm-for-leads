@@ -39,7 +39,7 @@ export function AddReminder() {
       | React.ChangeEvent<HTMLInputElement>,
   ) => {
     const { id, value } = event.target;
-    console.log(value);
+
     if (id === "date") setDate(value);
     if (id === "time") setTime(value);
     if (id === "reminder") setText(value);

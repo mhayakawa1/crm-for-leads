@@ -1,6 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { Profile } from "./AuthContext";
+import { Profile, Email } from "./AuthContext";
 import { url } from "./AuthContext";
 import {
   createContext,
@@ -45,6 +45,7 @@ export type AssignedTo = {
   id: string;
   name: string;
   email: string;
+  email_history: Email[]
 };
 
 export type User = {

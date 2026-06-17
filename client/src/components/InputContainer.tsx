@@ -7,12 +7,23 @@ interface InputProps {
   label: string;
   type?: string;
   value?: string;
-  min?: any;
-  onChange?: any;
+  min?: string;
+  onChange?: (
+    event:
+      | React.ChangeEvent<HTMLTextAreaElement>
+      | React.ChangeEvent<HTMLInputElement>,
+  ) => void;
   placeholder?: string;
 }
 
-export function InputContainer({ label, type, value, min, onChange, placeholder }: InputProps) {
+export function InputContainer({
+  label,
+  type,
+  value,
+  min,
+  onChange,
+  placeholder,
+}: InputProps) {
   const className = "border border-gray-300";
   return (
     <div className="py-2 text-sm flex flex-col gap-2">

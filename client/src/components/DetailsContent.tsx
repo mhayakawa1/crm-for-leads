@@ -30,7 +30,7 @@ export default function DetailsContent() {
     email: "",
     age: 0,
     created_at: "",
-    assigned_to: { id: "", name: "", email: "" },
+    assigned_to: { id: "", name: "", email: "", email_history: [] },
     status: "",
     notes: [],
     activity: [],

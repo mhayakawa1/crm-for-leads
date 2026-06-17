@@ -9,7 +9,7 @@ import { useState } from "react";
 import { Action } from "@/contexts/DataContext";
 
 interface ActivityProps {
-  activity: any[];
+  activity: Action[];
 }
 
 export function ActivityTimeline({ activity }: ActivityProps) {

@@ -1,7 +1,8 @@
 "use client";
 import { useDrag } from "react-dnd";
+import { User } from "@/contexts/DataContext";
 
-const DragItem = ({ lead }: any) => {
+const DragItem = ({ lead }: { lead: User }) => {
   const [{ isDragging }, drag] = useDrag(() => ({
     type: "item",
     item: { lead },

@@ -12,6 +12,7 @@ import { useState } from "react";
 import { useData } from "@/contexts/DataContext";
 import { DefaultButton } from "./DefaultButton";
 import { AssignedDropdown } from "./AssignedDropdown";
+import { AssignedTo } from "@/contexts/DataContext";
 
 export function AddData() {
   const [isOpen, setIsOpen] = useState(false);
@@ -19,25 +20,40 @@ export function AddData() {
   const [nameInput, setNameInput] = useState("");
   const [emailInput, setEmailInput] = useState("");
   const [ageInput, setAgeInput] = useState(18);
-  const [assignedInput, setAssignedInput] = useState({
+  const [assignedInput, setAssignedInput] = useState<AssignedTo>({
     id: "",
     name: "",
     email: "",
+    email_history: [],
   });
   const { updateEndpoint } = useData();
   const inputData = [
-    { label: "Name", type: "text", value: nameInput, onChange: setNameInput },
+    {
+      label: "Name",
+      type: "text",
+      value: nameInput,
+      placeholder: "Enter name",
+      onChange: setNameInput,
+    },
     {
       label: "Email",
       type: "email",
       value: emailInput,
+      placeholder: "Enter email",
       onChange: setEmailInput,
     },
-    { label: "Age", type: "number", value: ageInput, onChange: setAgeInput },
+    {
+      label: "Age",
+      type: "number",
+      value: ageInput,
+      placeholder: "18",
+      onChange: setAgeInput,
+    },
     {
       label: "Assigned To",
       type: "text",
       value: assignedInput,
+      placeholder: "",
       onChange: setAssignedInput,
     },
   ];
@@ -82,7 +98,7 @@ export function AddData() {
           className="px-4 pb-4 w-full max-w-[500px]"
         >
           {inputData.map((input) => {
-            const { label, type, value, onChange } = input;
+            const { label, type, value, placeholder, onChange } = input;
             return (
               <div key={label} className="py-2 text-sm flex flex-col gap-2">
                 <Label htmlFor={label}>{label}</Label>
@@ -92,6 +108,8 @@ export function AddData() {
                   <Input
                     type={type}
                     value={typeof value === "string" ? value : ""}
+                    min={0}
+                    placeholder={placeholder}
                     onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
                       (onChange as (value: string) => void)(event.target.value)
                     }
