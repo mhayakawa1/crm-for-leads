@@ -9,23 +9,6 @@ export function AddReminder() {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [text, setText] = useState("");
-  const inputData = [
-    {
-      label: "Due Date",
-      type: "date",
-      min: { today },
-    },
-    {
-      label: "Due Time",
-      type: "time",
-      min: null,
-    },
-    {
-      label: "Reminder",
-      type: "textarea",
-      min: null,
-    },
-  ];
 
   const handleSubmit = (event: React.ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -56,18 +39,35 @@ export function AddReminder() {
       | React.ChangeEvent<HTMLInputElement>,
   ) => {
     const { id, value } = event.target;
+    console.log(value);
     if (id === "date") setDate(value);
     if (id === "time") setTime(value);
-    if (id === "text") setText(value);
+    if (id === "reminder") setText(value);
   };
 
   return (
     <form onSubmit={handleSubmit} className="px-4 pb-4 w-full max-w-[500px]">
       <h3>Add Reminder</h3>
-      {inputData.map((data) => {
-        const { label, type, min } = data;
-        return <InputContainer key={type} label={label} type={type} min={min} onChange={handleChange} />;
-      })}
+      <InputContainer
+        label="Date"
+        type="date"
+        value={date}
+        min={today}
+        onChange={handleChange}
+      />
+      <InputContainer
+        label="Time"
+        type="time"
+        value={time}
+        onChange={handleChange}
+      />
+      <InputContainer
+        label="Reminder"
+        type="textarea"
+        placeholder='New reminder'
+        value={text}
+        onChange={handleChange}
+      />
       <DefaultButton className="mt-2 w-full">Submit</DefaultButton>
     </form>
   );
