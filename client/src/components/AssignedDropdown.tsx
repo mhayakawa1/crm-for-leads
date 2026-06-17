@@ -18,19 +18,19 @@ export function AssignedDropdown({ setAssignedInput }: DropdownProps) {
 
   return (
     <DropdownMenu modal={false}>
-      <DropdownMenuTrigger asChild className="">
-        <Button className="">
+      <DropdownMenuTrigger asChild className="border border-gray-300">
+        <Button className="flex justify-between pl-4">
           Select User
           <ChevronDown />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="bg-white border border-gray-300 shadow-sm">
+      <DropdownMenuContent className="bg-white border border-gray-300 shadow-sm w-[--radix-dropdown-menu-trigger-width]">
         <form onSubmit={(event) => event.preventDefault()}>
           {profiles.map((profile: any) => (
             <DropdownMenuItem
               onClick={() => setAssignedInput(profile)}
               key={profile.id}
-              className="hover:bg-gray-300"
+              className="hover:bg-gray-200"
             >
               {profile.name} ({profile.email})
             </DropdownMenuItem>

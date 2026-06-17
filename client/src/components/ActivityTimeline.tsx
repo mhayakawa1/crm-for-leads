@@ -30,8 +30,8 @@ export function ActivityTimeline({ activity }: ActivityProps) {
           </Button>
         </CollapsibleTrigger>
       </div>
-      <CollapsibleContent className="flex flex-col gap-8 items-center">
-        <ul className="flex flex-col gap-4 max-h-[40vh] overflow-y-scroll pb-8 pr-4 text-sm">
+      <CollapsibleContent className="flex flex-col gap-8 items-center ">
+        <ul className="w-full flex flex-col gap-4 max-h-[40vh] overflow-y-scroll pb-8 p-4 text-sm">
           {activity.map((action: Action) => {
             return (
               <li key={action.id} className="flex flex-col">

@@ -160,7 +160,7 @@ export default function DetailsContent() {
                 onChange={handleChange}
                 value={noteInput}
                 placeholder="Enter text..."
-                className="h-20"
+                className="h-20 border-gray-300"
               />
               <DefaultButton>
                 <Plus />
