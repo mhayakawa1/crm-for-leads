@@ -5,6 +5,7 @@ import LoggedInContent from "@/components/LoggedInContent";
 export default function Email() {
   return (
     <LoggedInContent>
+      
       <DataProvider>
         <EmailsContent />
       </DataProvider>

@@ -18,8 +18,6 @@ import { ChevronDown } from "lucide-react";
 import DashboardLink from "./DashboardLink";
 import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
-import { Input } from "./ui/input";
-import { Textarea } from "./ui/textarea";
 import { DefaultButton } from "./DefaultButton";
 import { Label } from "./ui/label";
 import { InputContainer } from "./InputContainer";
@@ -107,67 +105,69 @@ export default function EmailsContent() {
   };
 
   return (
-    <Card className="border border-gray-300 bg-white shadow-sm w-full m-auto max-w-sm h-fit">
-      <CardHeader>
-        <DashboardLink />
-        <CardTitle>Send an Email</CardTitle>
-      </CardHeader>
-      <CardContent className="w-full">
-        <form onSubmit={handleSubmit} className="flex flex-col gap-1 w-full">
-          <InputContainer
-            type="email"
-            label="Email"
-            placeholder="Recipient Email"
-            onChange={handleChange}
-            value={emailAddress}
-          />
-          <div className="py-2 text-sm flex flex-col gap-2">
-            <Label htmlFor="templates">Email Templates</Label>
-            <DropdownMenu modal={false}>
-              <DropdownMenuTrigger asChild className="border border-gray-300">
-                <Button className="flex justify-between">
-                  Choose a Template (Optional)
-                  <ChevronDown />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="bg-white border border-gray-300 shadow-sm w-[--radix-dropdown-menu-trigger-width]">
-                <form
-                  onSubmit={(event) => event.preventDefault()}
-                  id="templates"
-                >
-                  {templates.map((template) => (
-                    <DropdownMenuItem
-                      key={template.subject}
-                      onClick={() => useTemplate(template)}
-                      className="hover:bg-gray-200"
-                    >
-                      {template.type}
-                    </DropdownMenuItem>
-                  ))}
-                </form>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-          <InputContainer
-            type="text"
-            label="Subject"
-            placeholder="Your Subject"
-            onChange={handleChange}
-            value={subject}
-          />
-          <InputContainer
-            type="textarea"
-            label="Message"
-            placeholder="Your Message"
-            onChange={handleChange}
-            value={message}
-          />
-          <DefaultButton>Send Email</DefaultButton>
-        </form>
-      </CardContent>
-      <CardFooter className="flex-col gap-2">
-        {status && <p>{status}</p>}
-      </CardFooter>
-    </Card>
+    <div>
+      <DashboardLink />
+      <Card className="border border-gray-300 bg-white shadow-sm w-full m-auto max-w-sm h-fit">
+        <CardHeader>
+          <CardTitle>Send an Email</CardTitle>
+        </CardHeader>
+        <CardContent className="w-full">
+          <form onSubmit={handleSubmit} className="flex flex-col gap-1 w-full">
+            <InputContainer
+              type="email"
+              label="Email"
+              placeholder="Recipient Email"
+              onChange={handleChange}
+              value={emailAddress}
+            />
+            <div className="py-2 text-sm flex flex-col gap-2">
+              <Label htmlFor="templates">Email Templates</Label>
+              <DropdownMenu modal={false}>
+                <DropdownMenuTrigger asChild className="border border-gray-300">
+                  <Button className="flex justify-between">
+                    Choose a Template (Optional)
+                    <ChevronDown />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="bg-white border border-gray-300 shadow-sm w-[--radix-dropdown-menu-trigger-width]">
+                  <form
+                    onSubmit={(event) => event.preventDefault()}
+                    id="templates"
+                  >
+                    {templates.map((template) => (
+                      <DropdownMenuItem
+                        key={template.subject}
+                        onClick={() => useTemplate(template)}
+                        className="hover:bg-gray-200"
+                      >
+                        {template.type}
+                      </DropdownMenuItem>
+                    ))}
+                  </form>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+            <InputContainer
+              type="text"
+              label="Subject"
+              placeholder="Your Subject"
+              onChange={handleChange}
+              value={subject}
+            />
+            <InputContainer
+              type="textarea"
+              label="Message"
+              placeholder="Your Message"
+              onChange={handleChange}
+              value={message}
+            />
+            <DefaultButton>Send Email</DefaultButton>
+          </form>
+        </CardContent>
+        <CardFooter className="flex-col gap-2">
+          {status && <p>{status}</p>}
+        </CardFooter>
+      </Card>
+    </div>
   );
 }

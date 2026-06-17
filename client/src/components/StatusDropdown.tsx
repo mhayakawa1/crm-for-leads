@@ -17,19 +17,19 @@ export function StatusDropdown({ setStatusInput }: DropdownProps) {
 
   return (
     <DropdownMenu modal={false}>
-      <DropdownMenuTrigger asChild className="">
-        <Button className="">
+      <DropdownMenuTrigger asChild className="col-span-2 border border-gray-300">
+        <Button className="flex justify-between">
           Select Status
           <ChevronDown />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="bg-white border border-gray-300 shadow-sm">
+      <DropdownMenuContent className="bg-white border border-gray-300 shadow-sm w-[--radix-dropdown-menu-trigger-width]">
         <form onSubmit={(event) => event.preventDefault()}>
           {statuses.map((status: string) => (
             <DropdownMenuItem
               onClick={() => setStatusInput(status)}
               key={status}
-              className="hover:bg-gray-300"
+              className="hover:bg-gray-200"
             >
               {status}
             </DropdownMenuItem>

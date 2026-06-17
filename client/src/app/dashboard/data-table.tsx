@@ -111,7 +111,7 @@ export function DataTable<TData, TValue>({
                   })}
                   <TableCell
                     key="buttons"
-                    className="w-fit flex justify-between gap-[8px]"
+                    className="w-fit flex justify-between items-center gap-[8px]"
                   >
                     <DetailsLink id={row.original.id} />
                     <EditData data={row.original} />

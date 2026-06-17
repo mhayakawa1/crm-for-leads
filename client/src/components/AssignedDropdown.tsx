@@ -18,8 +18,8 @@ export function AssignedDropdown({ setAssignedInput }: DropdownProps) {
 
   return (
     <DropdownMenu modal={false}>
-      <DropdownMenuTrigger asChild className="border border-gray-300">
-        <Button className="flex justify-between pl-4">
+      <DropdownMenuTrigger asChild className="col-span-2 border border-gray-300">
+        <Button className="flex justify-between">
           Select User
           <ChevronDown />
         </Button>
