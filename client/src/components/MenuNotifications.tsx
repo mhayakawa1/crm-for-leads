@@ -5,8 +5,7 @@ export function MenuNotifications() {
   const { activeReminders } = useReminders();
   return (
     <DropdownMenuItem className="focus:outline-none">
-      {activeReminders ? `${activeReminders}` : "No"} Reminder
-      {activeReminders === 1 ? "" : "s"}
+      Reminders: {activeReminders}
     </DropdownMenuItem>
   );
 }

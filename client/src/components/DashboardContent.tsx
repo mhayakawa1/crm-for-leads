@@ -15,16 +15,6 @@ export default function DashboardContent() {
 
   return (
     <div className="relative flex flex-col gap-2 container mx-auto py-10 px-4 box-border">
-      {/* <ChatPopover/> */}
-      <Link href="/edit-statuses" className="w-fit text-center hover:underline">
-        Edit Lead Statuses
-      </Link>
-      <Link href="/analytics" className="w-fit text-center hover:underline">
-        Analytics
-      </Link>
-      <Link href="/email" className="w-fit text-center hover:underline">
-        Email
-      </Link>
       <RemindersContent />
       <AddData />
       <DataTable
