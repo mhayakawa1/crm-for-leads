@@ -9,10 +9,10 @@ export default function EditStatusesContent() {
   const { data } = useData();
 
   const statusesInfo = [
-    { title: "New", description: "Placeholder description" },
-    { title: "Contacted", description: "Placeholder description" },
-    { title: "Qualified", description: "Placeholder description" },
-    { title: "Closed", description: "Placeholder description" },
+    { title: "New", description: "Leads recently added" },
+    { title: "Contacted", description: "Leads reached out to" },
+    { title: "Qualified", description: "Leads fitting criteria" },
+    { title: "Closed", description: "Leads won or lost" },
   ];
 
   return (
