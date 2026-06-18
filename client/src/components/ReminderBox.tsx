@@ -1,4 +1,5 @@
 "use client";
+import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Check, Trash } from "lucide-react";
 import { DefaultButton } from "./DefaultButton";
@@ -10,7 +11,9 @@ interface ReminderProps {
 
 export function ReminderBox({ reminder }: ReminderProps) {
   const { id, time, overdue, text, completed } = reminder;
-  const { remindersList, updateReminders } = useReminders();
+  const { today, remindersList, updateReminders, checkTimeDifference } =
+    useReminders();
+  const [isChecked, setIsChecked] = useState(completed);
 
   const handleSubmit = (event: React.ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -22,9 +25,12 @@ export function ReminderBox({ reminder }: ReminderProps) {
     if (clickedButton) {
       const buttonId = clickedButton.id;
       if (buttonId === "complete") {
+        const newStatus = !completed;
+        const newOverdue = Boolean(checkTimeDifference(time, today));
+        setIsChecked((current) => !current);
         const newReminder = newRemindersList[index];
-        newReminder.completed = true;
-        newReminder.overdue = false;
+        newReminder.completed = newStatus;
+        newReminder.overdue = newOverdue && newStatus;
         newRemindersList.splice(index, 1, newReminder);
       } else if (buttonId === "delete") {
         newRemindersList.splice(index, 1);
@@ -44,16 +50,15 @@ export function ReminderBox({ reminder }: ReminderProps) {
         <CardTitle>{text}</CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col gap-2">
-        <ul>
-          <li>{time}</li>
-          {overdue ? <li className="text-red-500">Overdue</li> : ""}
-        </ul>
+        <p>
+          {time} {overdue ? <span className="text-red-500">Overdue</span> : ""}
+        </p>
         <form onSubmit={handleSubmit} className="flex justify-between">
           <DefaultButton id="delete" className="w-8">
             <Trash />
           </DefaultButton>
           <DefaultButton id="complete" className="w-8">
-            {completed ? <Check /> : null}
+            {isChecked ? <Check /> : null}
           </DefaultButton>
         </form>
       </CardContent>

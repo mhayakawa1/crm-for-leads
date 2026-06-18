@@ -18,7 +18,7 @@ export function ConfirmDelete({ data }: DeleteProps) {
   const { id } = data;
   const { updateEndpoint } = useData();
   const [open, setOpen] = useState(false);
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: React.ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
     const nativeEvent = event.nativeEvent as SubmitEvent;
     const clickedButton = nativeEvent.submitter as HTMLButtonElement | null;

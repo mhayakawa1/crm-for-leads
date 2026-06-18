@@ -49,7 +49,7 @@ export default function AnalyticsContent() {
   }, []);
 
   return (
-    <div>
+    <div className="flex flex-col gap-4 pb-10">
       <DashboardLink />
       <Card className="border border-gray-300 bg-white shadow-sm w-full m-auto max-w-sm h-fit">
         <CardHeader>

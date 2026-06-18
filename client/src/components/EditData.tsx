@@ -23,6 +23,7 @@ interface EditProps {
 
 export function EditData({ data }: EditProps) {
   const { id, name, email, status, assigned_to, activity } = data;
+  const [isOpen, setIsOpen] = useState(false);
   const [nameInput, setNameInput] = useState(name || "");
   const [emailInput, setEmailInput] = useState(email || "");
   const [statusInput, setStatusInput] = useState(status || "");
@@ -63,6 +64,7 @@ export function EditData({ data }: EditProps) {
     const newActions = createDescription(user, data, body);
     body.activity = [newActions, ...activity];
     updateEndpoint("PUT", JSON.stringify(body), id);
+    setIsOpen(false);
   };
 
   useEffect(() => {
@@ -75,7 +77,7 @@ export function EditData({ data }: EditProps) {
   }, [data]);
 
   return (
-    <Popover>
+    <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger asChild>
         <DefaultButton>
           <Edit />

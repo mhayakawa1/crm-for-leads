@@ -45,7 +45,7 @@ export type AssignedTo = {
   id: string;
   name: string;
   email: string;
-  email_history: Email[]
+  email_history: Email[];
 };
 
 export type User = {
@@ -142,7 +142,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
       if (requestData) {
         async function getData(): Promise<User[]> {
           let newUrl = `${url}${endpoint}`;
-          if (method !== "PUT" && method !== "POST") {
+          if (method === "GET") {
             newUrl += `&assigned_id=${JSON.parse(user || "").sub}`;
           }
           if (method === "POST" || method === "PUT") {

@@ -24,6 +24,7 @@ export interface ContextData {
   remindersList: Reminder[];
   updateReminders: (method: string, body: string) => void;
   activeReminders: number;
+  checkTimeDifference: (reminderTime: string, currentTime: string) => void;
 }
 
 const RemindersContext = createContext<ContextData | undefined>(undefined);
@@ -146,6 +147,7 @@ export function RemindersProvider({ children }: { children: ReactNode }) {
         remindersList,
         updateReminders,
         activeReminders,
+        checkTimeDifference
       }}
     >
       {children}
