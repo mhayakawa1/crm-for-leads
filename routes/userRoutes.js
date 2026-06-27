@@ -20,7 +20,6 @@ import {
   postEmail,
   POST,
 } from "../controllers/userController.js";
-// import { POST } from "./../app/api/chat/route.js";
 import jwt from "jsonwebtoken";
 import { protect } from "../middleware/auth.js";
 
@@ -33,33 +32,7 @@ router.use((req, res, next) => {
   next();
 });
 router.post("/signup", signUp);
-router.post(
-  "/login",
-  async (req, res) => {
-    try {
-      const { email, password } = req.body;
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-      if (error) return res.status(400).json({ error: error.message });
-      const { access_token, refresh_token } = data.session;
-
-      const accessToken = jwt.sign(data.user.user_metadata, access_token, {
-        expiresIn: "1d",
-      });
-
-      return res.json({
-        success: true,
-        user: data.user.user_metadata,
-        accessToken: accessToken,
-      });
-    } catch (err) {
-      return res.status(500).json({ error: err.message });
-    }
-  },
-  signIn,
-);
+router.post("/login", signIn);
 router.post("/logout", signOut);
 /**
  * @swagger

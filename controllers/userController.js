@@ -137,7 +137,6 @@ export const signUp = async (req, res) => {
 export const signIn = async (req, res) => {
   try {
     const { email, password } = req.body;
-
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
@@ -147,8 +146,8 @@ export const signIn = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      token: data.session.access_token,
-      user: data.user,
+      accessToken: data.session.access_token,
+      user: data.user.user_metadata,
     });
   } catch (error) {
     res.status(401).json({ success: false, error: error.message });
