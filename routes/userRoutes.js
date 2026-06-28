@@ -239,7 +239,7 @@ router.get("/profiles", protect, fetchProfiles);
 router.get("/reminders/:id", protect, fetchRemindersById);
 router.put("/reminders/:id", protect, modifyReminders);
 
-router.post("/send", postEmail);
+router.post("/send", protect, postEmail);
 
-router.post("/chat", POST);
+router.post("/chat", protect, POST);
 export default router;

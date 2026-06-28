@@ -4,15 +4,21 @@ import { useState } from "react";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport, type UIMessage } from "ai";
 import { DefaultButton } from "./DefaultButton";
+import { LocaleRouteNormalizer } from "next/dist/server/normalizers/locale-route-normalizer";
 
 export type ChatMessage = UIMessage<unknown, any>;
 
 export default function ChatAssistant() {
   const [input, setInput] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const getAccessToken = () => localStorage.getItem("accessToken") || "";
+
   const { messages, sendMessage, status, error } = useChat<ChatMessage>({
     transport: new DefaultChatTransport({
       api: `${url}chat`,
+      headers: () => ({
+        Authorization: `Bearer ${getAccessToken()}`,
+      }),
     }),
     onError: (error) => {
       setErrorMessage(error.message);

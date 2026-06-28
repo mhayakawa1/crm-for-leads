@@ -71,9 +71,10 @@ export default function EmailsContent() {
       email_history: profile ? [...profile.email_history] : [],
     };
     try {
+      const token = localStorage.getItem("accessToken") || "";
       const response = await fetch("http://localhost:5000/api/send", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", Authorization: token },
         body: JSON.stringify(payload),
       });
       const data = await response.json();

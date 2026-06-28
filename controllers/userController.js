@@ -232,7 +232,6 @@ export const postEmail = async (req, res) => {
       text: text,
       html: `<p><span>From: ${name} (${email})</span><br />${text}</p>`,
     };
-
     await sgMail.send(emailMessage);
     const newHistory = [emailMessage, ...body.email_history];
     const updatedEmails = await updateProfile(sub, {
