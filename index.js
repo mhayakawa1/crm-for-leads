@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import userRoutes from "./routes/userRoutes.js";
 import { swaggerUi, specs } from "./config/swagger.js";
 
-dotenv.config();
+dotenv.config({ path: "./.env.local" });
 
 const app = express();
 app.use(

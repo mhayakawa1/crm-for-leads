@@ -21,12 +21,6 @@ export const createUser = async (userData) => {
   return data;
 };
 
-export const getUsers = async () => {
-  const { data, error, query } = await supabase.from("users").select("*");
-  if (error) throw new Error(error.message);
-  return data;
-};
-
 export const getUserById = async (id) => {
   const { data, error } = await supabase
     .from("users")
@@ -104,45 +98,6 @@ export const getFilteredUsers = async (filters) => {
   const { data, error } = await query;
 
   if (error) throw new Error(error.message);
-  return data;
-};
-
-export const getSortedUsers = async (filters) => {
-  let query = supabase.from("users").select("*");
-  if (filters.name) {
-    query = query.ilike("name", `%${filters.name}%`);
-  }
-
-  if (filters.email) {
-    query = query.ilike("name", `%${filters.email}%`);
-  }
-
-  if (filters.status) {
-    query = query.eq("status", filters.status);
-  }
-
-  if (filters.created_at) {
-    query = query.eq("created_at", filters.created_at);
-  }
-
-  const { data, error } = await query;
-  if (error) throw new Error(error.message);
-  return data;
-};
-
-export const loginUser = async (email, password) => {
-  const { data, error } = await supabase
-    .from("users")
-    .select("*")
-    .eq("email", email)
-    .single();
-
-  if (error || !data) throw new Error("Invalid email or password");
-
-  if (data.password !== password) {
-    throw new Error("Invalid email or password");
-  }
-
   return data;
 };
 

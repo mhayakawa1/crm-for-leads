@@ -1,14 +1,11 @@
 import {
   createUser,
-  getUsers,
   getUserById,
   getUserByEmail,
   updateUser,
   deleteUser,
   searchUsers,
   getFilteredUsers,
-  getSortedUsers,
-  loginUser,
   registerUser,
   getProfiles,
   getRemindersById,
@@ -16,7 +13,6 @@ import {
   updateProfile,
 } from "../services/userService.js";
 import supabase from "../config/supabaseClient.js";
-import { NextResponse } from "next/server.js";
 import sgMail from "@sendgrid/mail";
 import { google } from "@ai-sdk/google";
 import {
@@ -203,7 +199,7 @@ export const modifyReminders = async (req, res) => {
 
 export const postEmail = async (req, res) => {
   if (!process.env.SENDGRID_API_KEY) {
-    res.status(400).json({ error: "Missing API key" });
+   return res.status(400).json({ error: "Missing API key" });
   } else {
     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
   }
@@ -212,7 +208,7 @@ export const postEmail = async (req, res) => {
     const { to, subject, message, from } = body?.email;
 
     if (!to || !subject || !message) {
-      res
+      return res
         .status(400)
         .json({ error: "Missing required fields: to, subject, or message" });
     }
@@ -246,11 +242,7 @@ export const postEmail = async (req, res) => {
   }
 };
 
-export const runtime = "edge";
-
-export const dynamic = "force-dynamic";
-
-export async function POST(req, res) {
+export const POST = async (req, res) => {
   try {
     const { messages } = req.body;
     let pageContextText = "";
@@ -270,7 +262,7 @@ export async function POST(req, res) {
     if (pageContextText) {
       systemInstruction += `\n\nYou are currently helping the user view the page: ${currentUrl}. 
 Use the following raw text content extracted from their screen to answer questions accurately:
----
+---s
 ${pageContextText}
 ---`;
     }
